@@ -6,6 +6,8 @@ compute, with the before-and-after latency measured on your own machine.
 ## Run it
 
 ```bash
+git clone https://github.com/system-sense/system-sense-caching-series.git
+cd system-sense-caching-series/episode-1-basics
 docker compose up --build
 ```
 

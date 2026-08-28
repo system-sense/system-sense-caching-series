@@ -36,6 +36,17 @@ Each episode ends by opening the wound the next one closes.
 Python + FastAPI, PostgreSQL 16 and Redis 7, identical across all four episodes
 so you only learn the plumbing once. Episodes 3 and 4 add a k6 load generator.
 
+## Get it
+
+```bash
+git clone https://github.com/system-sense/system-sense-caching-series.git
+cd system-sense-caching-series/episode-1-basics
+docker compose up --build
+```
+
+Then open <http://localhost:8080>. Compose prints the link when the stack is
+ready.
+
 ## Requirements
 
 Docker with Compose. That is the whole list — no local Python, no cloud
