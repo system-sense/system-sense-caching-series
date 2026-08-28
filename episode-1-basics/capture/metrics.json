@@ -1,0 +1,22 @@
+{
+  "cache_off": {
+    "name": "cache_off",
+    "samples": 30,
+    "min_ms": 19.66,
+    "median_ms": 20.21,
+    "p95_ms": 24.29,
+    "max_ms": 26.95
+  },
+  "cache_on": {
+    "name": "cache_on",
+    "samples": 29,
+    "min_ms": 0.17,
+    "median_ms": 0.41,
+    "p95_ms": 0.6,
+    "max_ms": 0.68
+  },
+  "speedup_x": 49.3,
+  "postgres_execution_ms": 33.005,
+  "redis_used_memory_human": "1.09M",
+  "cached_key_bytes": 696
+}

@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    # JIT compilation costs ~90 ms to compile a query that runs in tens of ms,
+    # which is noise, not signal. Disabling it for short OLTP queries is a normal
+    # production setting, and it keeps EXPLAIN ANALYZE honest here.
+    command: ["postgres", "-c", "jit=off"]
+    environment:
+      POSTGRES_USER: sysense
+      POSTGRES_PASSWORD: sysense
+      POSTGRES_DB: sysense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sysense -d sysense"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build: .
+    # ─────────────────────────────────────────────────────────────────────
+    #  THE KNOB. Set it to true, run the command again, watch the numbers.
+    # ─────────────────────────────────────────────────────────────────────
+    environment:
+      CACHE_ENABLED: "${CACHE_ENABLED:-false}"
+      CACHE_TTL_SECONDS: "300"
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      REDIS_URL: "redis://redis:6379/0"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:

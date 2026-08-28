@@ -1,0 +1,28 @@
+Timing is on.
+                                                QUERY PLAN                                                
+----------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=270274.26..270279.21 rows=198 width=48) (actual rows=1 loops=1)
+   Group Key: me.n_orders, me.total_cents
+   Batches: 1  Memory Usage: 40kB
+   Buffers: shared read=1000
+   CTE spend
+     ->  HashAggregate  (cost=3100.00..3504.35 rows=40435 width=24) (actual rows=40000 loops=1)
+           Group Key: orders.user_id
+           Batches: 1  Memory Usage: 4881kB
+           Buffers: shared read=1000
+           ->  Seq Scan on orders  (cost=0.00..2200.00 rows=120000 width=12) (actual rows=120000 loops=1)
+                 Buffers: shared read=1000
+   ->  Nested Loop  (cost=0.00..164671.54 rows=8167870 width=24) (actual rows=40000 loops=1)
+         Buffers: shared read=1000
+         ->  CTE Scan on spend me  (cost=0.00..909.79 rows=202 width=16) (actual rows=1 loops=1)
+               Filter: (user_id = 42)
+               Rows Removed by Filter: 39999
+               Buffers: shared read=1000
+         ->  CTE Scan on spend s  (cost=0.00..808.70 rows=40435 width=8) (actual rows=40000 loops=1)
+ Planning:
+   Buffers: shared hit=83 read=24 dirtied=1
+ Planning Time: 0.621 ms
+ Execution Time: 33.005 ms
+(22 rows)
+
+Time: 35.368 ms
