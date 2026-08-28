@@ -21,82 +21,93 @@
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: var(--sans); line-height: 1.5;
-  }
-  .wrap { max-width: 940px; margin: 0 auto; padding: 32px 20px 72px; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.5; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 30px 22px 60px; }
 
-  header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
-  h1 { font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+  header { display: flex; align-items: baseline; gap: 13px; flex-wrap: wrap; margin-bottom: 4px; }
+  h1 { font-size: 25px; margin: 0; letter-spacing: -0.01em; }
   .ep { color: var(--dim); font-size: 14px; }
-  .sub { color: var(--dim); font-size: 15px; margin: 0 0 26px; }
-
+  .sub { color: var(--dim); font-size: 14.5px; margin: 0 0 24px; }
   .pill {
-    margin-left: auto; font-family: var(--mono); font-size: 12px;
-    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line);
-    background: var(--panel); white-space: nowrap;
+    margin-left: auto; font-family: var(--mono); font-size: 12px; padding: 5px 11px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--panel); white-space: nowrap;
   }
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
   .on { background: var(--emerald); } .off { background: var(--crimson); }
 
-  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
-  .panel h2 { font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); margin: 0 0 16px; font-weight: 600; }
+  /* ---- two columns ---- */
+  .cols { display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: stretch; }
+  .cols > .panel { display: flex; flex-direction: column; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
 
-  /* ---- stepper ---- */
-  .step { display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); align-items: start; }
-  .step:first-of-type { border-top: 0; }
-  .num {
-    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
-    font-family: var(--mono); font-size: 13px; border: 1px solid var(--line);
-    color: var(--dim); background: var(--panel-2);
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .panel h2 {
+    font-size: 11.5px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--dim); margin: 0 0 15px; font-weight: 600;
   }
-  .step.done .num { background: var(--emerald); border-color: var(--emerald); color: #05231a; font-weight: 700; }
-  .step.active .num { border-color: var(--sky); color: var(--sky); }
-  .step h3 { margin: 2px 0 4px; font-size: 16px; font-weight: 600; }
-  .why { color: var(--dim); font-size: 14px; margin: 0; }
-  .out { margin-top: 9px; font-family: var(--mono); font-size: 14px; display: none; }
-  .step.done .out { display: block; }
+
+  /* ---- the three actions ---- */
+  .action { margin-bottom: 15px; }
+  .action button { width: 100%; text-align: left; }
+  .action .cap { color: var(--dim); font-size: 12.5px; margin: 6px 2px 0; }
 
   button {
-    font: inherit; font-size: 14px; padding: 8px 15px; border-radius: 8px; cursor: pointer;
+    font: inherit; font-size: 14.5px; padding: 12px 15px; border-radius: 9px; cursor: pointer;
     background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
-    white-space: nowrap; transition: border-color .12s, background .12s;
+    transition: border-color .12s, background .12s, transform .06s;
   }
   button:hover:not(:disabled) { border-color: var(--sky); }
-  button:disabled { opacity: .4; cursor: not-allowed; }
-  button.primary { background: var(--sky); color: #04121c; border-color: var(--sky); font-weight: 600; }
-  button.primary:hover:not(:disabled) { filter: brightness(1.08); }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.go { background: var(--sky); color: #04121c; border-color: var(--sky); font-weight: 600; }
+  button.go:hover:not(:disabled) { filter: brightness(1.08); }
+  button.ghost { background: none; font-size: 13px; padding: 7px 12px; }
 
-  .badge { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: 700; }
+  .kbd { float: right; font-family: var(--mono); font-size: 11px; color: var(--dim); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+  button.go .kbd { color: #04121c; border-color: rgba(0,0,0,.25); }
+
+  .hint {
+    background: rgba(56,189,248,.07); border: 1px solid rgba(56,189,248,.25);
+    color: var(--dim); font-size: 13px; border-radius: 8px; padding: 10px 12px; margin-bottom: 18px;
+  }
+  .hint b { color: var(--sky); font-weight: 600; }
+
+  .badge { font-family: var(--mono); font-size: 11.5px; padding: 2px 7px; border-radius: 5px; font-weight: 700; }
   .b-hit { background: rgba(16,185,129,.16); color: var(--emerald); }
   .b-miss { background: rgba(239,68,68,.16); color: var(--crimson); }
   .b-bypass { background: rgba(245,158,11,.16); color: var(--amber); }
 
-  /* ---- chart ---- */
-  .row { display: grid; grid-template-columns: 62px 1fr 92px; gap: 10px; align-items: center; margin-bottom: 5px; font-family: var(--mono); font-size: 13px; }
-  .bar { height: 17px; border-radius: 3px; min-width: 3px; transition: width .25s ease; }
+  /* ---- comparison ---- */
+  .cmp { margin-bottom: 20px; }
+  .cmp .lbl { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+  .cmp .lbl .v { font-family: var(--mono); font-weight: 700; }
+  .cmp .track { background: var(--panel-2); border-radius: 5px; height: 30px; overflow: hidden; margin-bottom: 13px; }
+  .cmp .fill { height: 100%; border-radius: 5px; transition: width .35s ease; min-width: 3px; }
+  .verdict { text-align: center; font-size: 15px; color: var(--dim); padding: 11px 0 3px; border-top: 1px solid var(--line); }
+  .verdict b { color: var(--emerald); font-family: var(--mono); font-size: 21px; }
+
+  /* ---- history ---- */
+  .hist { flex: 1; min-height: 210px; max-height: 460px; overflow-y: auto; padding-right: 4px; }
+  .row { display: grid; grid-template-columns: 58px 1fr 84px; gap: 9px; align-items: center; margin-bottom: 5px; font-family: var(--mono); font-size: 12.5px; }
+  .bar { height: 16px; border-radius: 3px; min-width: 3px; animation: grow .3s ease; }
+  @keyframes grow { from { width: 0 } }
   .bar.hit { background: var(--emerald); }
   .bar.miss { background: var(--crimson); }
   .bar.bypass { background: var(--amber); }
   .ms { text-align: right; color: var(--dim); }
 
-  .controls { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 18px; }
-
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 14px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
-  .stat .k { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat .v { font-family: var(--mono); font-size: 21px; margin-top: 3px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 17px; padding-top: 15px; border-top: 1px solid var(--line); }
+  .stat .k { color: var(--dim); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .v { font-family: var(--mono); font-size: 17px; margin-top: 2px; }
 
   pre {
-    background: #060a12; border: 1px solid var(--line); border-radius: 8px;
-    padding: 14px; overflow-x: auto; font-family: var(--mono); font-size: 12.5px;
-    color: #c9d4e8; margin: 10px 0 0; line-height: 1.45;
+    background: #060a12; border: 1px solid var(--line); border-radius: 8px; padding: 13px;
+    overflow-x: auto; font-family: var(--mono); font-size: 12px; color: #c9d4e8; margin: 12px 0 0; line-height: 1.45;
   }
-  .empty { color: var(--dim); font-size: 14px; font-style: italic; }
-  code { font-family: var(--mono); background: var(--panel-2); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
-  .foot { color: var(--dim); font-size: 13px; }
-  .foot a { color: var(--sky); }
-  .warn { color: var(--amber); font-size: 13px; margin-top: 10px; }
+  .empty { color: var(--dim); font-size: 14px; font-style: italic; text-align: center; padding: 40px 10px; }
+  code { font-family: var(--mono); background: var(--panel-2); padding: 1px 6px; border-radius: 4px; font-size: 12.5px; }
+  .foot { color: var(--dim); font-size: 12.5px; margin-top: 20px; }
+  .foot code { display: block; margin: 6px 0; padding: 6px 9px; }
 </style>
 </head>
 <body>
@@ -107,222 +118,176 @@
     <span class="ep">System Sense · Episode 1</span>
     <span class="pill" id="pill"><span class="dot off"></span>connecting…</span>
   </header>
-  <p class="sub">Every number on this page is measured by the application, on your machine, right now.</p>
+  <p class="sub">Every number here is measured by the application, on your machine, right now.</p>
 
-  <div class="panel">
-    <h2>Walkthrough</h2>
-    <div id="steps"></div>
-  </div>
+  <div class="cols">
 
-  <div class="panel">
-    <h2>Free play</h2>
-    <div class="controls">
-      <button id="b-cached">Cached read</button>
-      <button id="b-uncached">Uncached read</button>
-      <button id="b-flush">Clear the key</button>
-      <button id="b-burst">Fire 25</button>
-      <button id="b-reset">Reset chart</button>
+    <!-- ─────────── left: the controls ─────────── -->
+    <div class="panel">
+      <h2>Try it</h2>
+
+      <div class="hint">
+        Press <b>Empty the cache</b>, then <b>Read</b> twice. The first read pays
+        full price; the second comes from memory.
+      </div>
+
+      <div class="action">
+        <button id="b-flush"><span class="kbd">1</span>Empty the cache</button>
+        <p class="cap">Deletes <code>user:42</code>, so the next read has to do real work.</p>
+      </div>
+
+      <div class="action">
+        <button id="b-read" class="go"><span class="kbd">2</span>Read</button>
+        <p class="cap">Cache-Aside. First call is a MISS and stores the result; every call after is a HIT.</p>
+      </div>
+
+      <div class="action">
+        <button id="b-uncached"><span class="kbd">3</span>Read uncached</button>
+        <p class="cap">Never touches Redis. Press it repeatedly — it stays slow. That is the control.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Key size</div><div class="v" id="s-bytes">–</div></div>
+        <div class="stat"><div class="k">Key TTL</div><div class="v" id="s-ttl">–</div></div>
+        <div class="stat"><div class="k">Requests</div><div class="v" id="s-n">0</div></div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+        <button class="ghost" id="b-plan">Show query plan</button>
+        <button class="ghost" id="b-reset">Reset chart</button>
+      </div>
+      <div id="plan"></div>
+
+      <p class="foot">
+        Same two endpoints, from a terminal:
+        <code>curl -sD- -o/dev/null localhost:8000/api/users/42</code>
+        <code>curl -sD- -o/dev/null localhost:8000/api/users/42/uncached</code>
+      </p>
     </div>
-    <div id="chart"><p class="empty">No requests yet. Press a button above.</p></div>
-    <div class="stats">
-      <div class="stat"><div class="k">Cached (HIT)</div><div class="v" id="s-hit">–</div></div>
-      <div class="stat"><div class="k">Uncached</div><div class="v" id="s-cold">–</div></div>
-      <div class="stat"><div class="k">Speed-up</div><div class="v" id="s-x">–</div></div>
-      <div class="stat"><div class="k">Key size</div><div class="v" id="s-bytes">–</div></div>
-      <div class="stat"><div class="k">Key TTL</div><div class="v" id="s-ttl">–</div></div>
+
+    <!-- ─────────── right: the graph ─────────── -->
+    <div class="panel">
+      <h2>Response time</h2>
+
+      <div class="cmp" id="cmp" style="display:none">
+        <div class="lbl"><span>Cached (HIT)</span><span class="v" id="c-hit" style="color:var(--emerald)">–</span></div>
+        <div class="track"><div class="fill" id="f-hit" style="background:var(--emerald);width:0"></div></div>
+        <div class="lbl"><span>Uncached — straight to Postgres</span><span class="v" id="c-cold" style="color:var(--crimson)">–</span></div>
+        <div class="track"><div class="fill" id="f-cold" style="background:var(--crimson);width:0"></div></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+
+      <div class="hist" id="hist">
+        <p class="empty">No requests yet.<br>Use the buttons on the left — the chart fills in as you go.</p>
+      </div>
     </div>
-  </div>
 
-  <div class="panel">
-    <h2>Prefer the terminal?</h2>
-    <p class="foot">
-      Same two endpoints, no UI involved:<br><br>
-      <code>curl -sD- -o/dev/null localhost:8000/api/users/42</code><br>
-      <code>curl -sD- -o/dev/null localhost:8000/api/users/42/uncached</code><br><br>
-      Read the <code>X-Cache</code> and <code>X-Elapsed-Ms</code> response headers. The README has more.
-    </p>
   </div>
-
 </div>
 
 <script>
 const $ = (id) => document.getElementById(id);
 const api = async (p, opt) => (await fetch(p, opt)).json();
+let results = [];
 
-let results = [];      // {status, ms}
-let cacheEnabled = true;
-
-/* ---------- the guided walkthrough ---------------------------------- */
-const STEPS = [
-  {
-    title: "Empty the cache",
-    why: "Start from a known state, so the next read has to do the real work.",
-    label: "Do it",
-    run: async () => {
-      await api("/api/flush", { method: "POST" });
-      return { text: "key user:42 deleted" };
-    },
-  },
-  {
-    title: "First read — the MISS",
-    why: "Nothing in the cache, so the app runs the real query: 120,000 order rows aggregated in Postgres. Then it stores the result on the way out.",
-    label: "Read",
-    run: async () => {
-      const r = await api("/api/read?mode=cached");
-      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
-    },
-  },
-  {
-    title: "Second read — the HIT",
-    why: "Same request, same data. This time it is already in Redis, and Postgres is never asked.",
-    label: "Read again",
-    run: async () => {
-      const r = await api("/api/read?mode=cached");
-      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
-    },
-  },
-  {
-    title: "The control — was it really the cache?",
-    why: "A fair objection: maybe the second read was fast because Postgres warmed its own buffers. This endpoint never touches Redis. Press it as many times as you like — it stays slow. That is the cache doing the work, not the database.",
-    label: "Read uncached",
-    run: async () => {
-      const r = await api("/api/read?mode=uncached");
-      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
-    },
-  },
-  {
-    title: "Why was it ever slow?",
-    why: "The query plan behind a profile read. A sequential scan over every order row, then a hash aggregate — expensive to compute, and it barely changes from day to day. Exactly the shape of thing worth caching.",
-    label: "Show the plan",
-    run: async () => {
-      const r = await api("/api/explain");
-      return { pre: r.plan.trim() };
-    },
-  },
-];
-
-function renderSteps() {
-  $("steps").innerHTML = STEPS.map((s, i) => `
-    <div class="step" id="step-${i}">
-      <div class="num">${i + 1}</div>
-      <div>
-        <h3>${s.title}</h3>
-        <p class="why">${s.why}</p>
-        <div class="out" id="out-${i}"></div>
-      </div>
-      <button id="run-${i}" ${i === 0 ? 'class="primary"' : ""}>${s.label}</button>
-    </div>`).join("");
-
-  STEPS.forEach((s, i) => {
-    $(`run-${i}`).onclick = async () => {
-      const btn = $(`run-${i}`);
-      btn.disabled = true;
-      btn.textContent = "…";
-      try {
-        const out = await s.run();
-        const el = $(`out-${i}`);
-        if (out.pre) {
-          el.innerHTML = `<pre>${escapeHtml(out.pre)}</pre>`;
-        } else if (out.status) {
-          el.innerHTML = `${badge(out.status)} <span style="margin-left:8px">${out.text}</span>`;
-        } else {
-          el.textContent = out.text;
-        }
-        if (out.record) push(out.status, out.ms);
-        $(`step-${i}`).classList.add("done");
-        const next = $(`run-${i + 1}`);
-        if (next) next.className = "primary";
-      } finally {
-        btn.disabled = false;
-        btn.textContent = s.label;
-        refresh();
-      }
-    };
-  });
-}
-
-const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const badge = (st) => `<span class="badge b-${st.toLowerCase()}">${st}</span>`;
+const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const median = (a) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
 
-/* ---------- free play ------------------------------------------------ */
-function push(status, ms) {
-  if (status === undefined) return;
-  results.push({ status, ms });
-  if (results.length > 40) results.shift();
-  drawChart();
-}
-
-function drawChart() {
-  const box = $("chart");
+/* ---------- chart ---------- */
+function draw() {
+  const hist = $("hist");
   if (!results.length) {
-    box.innerHTML = '<p class="empty">No requests yet. Press a button above.</p>';
+    hist.innerHTML = '<p class="empty">No requests yet.<br>Use the buttons on the left — the chart fills in as you go.</p>';
+    $("cmp").style.display = "none";
+    $("s-n").textContent = "0";
     return;
   }
-  // Log scale: on a linear axis a 0.4 ms bar next to a 48 ms bar is invisible,
-  // and the whole point is that the reader can see both.
-  const max = Math.max(...results.map((r) => r.ms), 1);
-  const scale = (ms) => Math.max(2, (Math.log10(Math.max(ms, 0.01)) + 2) / (Math.log10(max) + 2) * 100);
+  $("s-n").textContent = results.length;
 
-  box.innerHTML = results.map((r) => `
+  // Log scale. On a linear axis a 0.2 ms bar beside a 25 ms bar is one pixel,
+  // and being able to see both at once is the entire point of the page.
+  const max = Math.max(...results.map((r) => r.ms), 1);
+  const w = (ms) => Math.max(2, ((Math.log10(Math.max(ms, 0.05)) + 1.5) / (Math.log10(max) + 1.5)) * 100);
+
+  hist.innerHTML = results.map((r) => `
     <div class="row">
       <span>${badge(r.status)}</span>
-      <div><div class="bar ${r.status.toLowerCase()}" style="width:${scale(r.ms)}%"></div></div>
+      <div><div class="bar ${r.status.toLowerCase()}" style="width:${w(r.ms)}%"></div></div>
       <span class="ms">${r.ms.toFixed(2)} ms</span>
-    </div>`).join("");
-}
+    </div>`).reverse().join("");
+  hist.scrollTop = 0;
 
-const median = (a) => {
-  if (!a.length) return null;
-  const s = [...a].sort((x, y) => x - y);
-  return s[Math.floor(s.length / 2)];
-};
-
-function drawStats(state) {
+  // Headline comparison: median HIT against median uncached.
   const hit = median(results.filter((r) => r.status === "HIT").map((r) => r.ms));
   const cold = median(results.filter((r) => r.status !== "HIT").map((r) => r.ms));
-  $("s-hit").textContent = hit === null ? "–" : hit.toFixed(2) + " ms";
-  $("s-cold").textContent = cold === null ? "–" : cold.toFixed(1) + " ms";
-  $("s-x").textContent = hit && cold ? Math.round(cold / hit) + "×" : "–";
-  if (state) {
-    $("s-bytes").textContent = state.key_bytes ? state.key_bytes + " B" : "–";
-    $("s-ttl").textContent = state.ttl ? state.ttl + " s" : "–";
-  }
+  if (hit === null && cold === null) return;
+  $("cmp").style.display = "block";
+  const top = Math.max(hit ?? 0, cold ?? 0, 0.01);
+  $("c-hit").textContent = hit === null ? "–" : hit.toFixed(2) + " ms";
+  $("c-cold").textContent = cold === null ? "–" : cold.toFixed(1) + " ms";
+  $("f-hit").style.width = hit === null ? "0" : Math.max(1.5, (hit / top) * 100) + "%";
+  $("f-cold").style.width = cold === null ? "0" : Math.max(1.5, (cold / top) * 100) + "%";
+  $("verdict").innerHTML = hit && cold
+    ? `<b>${Math.round(cold / hit)}×</b> faster from cache`
+    : '<span style="font-size:13px">Press both Read buttons to compare</span>';
 }
 
-async function refresh() {
-  let state = null;
+/* ---------- actions ---------- */
+async function fire(mode, btn) {
+  btn.disabled = true;
   try {
-    state = await api("/api/state");
-  } catch (e) { /* app may still be starting */ }
-
-  const pill = $("pill");
-  if (!state || state.error) {
-    pill.innerHTML = '<span class="dot off"></span>app unreachable';
-  } else {
-    cacheEnabled = state.cache_enabled;
-    pill.innerHTML = `<span class="dot ${cacheEnabled ? "on" : "off"}"></span>CACHE_ENABLED=${cacheEnabled}`;
+    const r = await api(`/api/read?mode=${mode}`);
+    if (r.error) return;
+    results.push({ status: r.status, ms: r.ms });
+    if (results.length > 60) results.shift();
+    draw();
+  } finally {
+    btn.disabled = false;
+    refresh();
   }
-  drawStats(state);
 }
 
-async function fire(mode) {
-  const r = await api(`/api/read?mode=${mode}`);
-  if (!r.error) push(r.status, r.ms);
+$("b-read").onclick = (e) => fire("cached", e.currentTarget);
+$("b-uncached").onclick = (e) => fire("uncached", e.currentTarget);
+$("b-flush").onclick = async (e) => {
+  e.currentTarget.disabled = true;
+  await api("/api/flush", { method: "POST" });
+  e.currentTarget.disabled = false;
   refresh();
-}
-
-$("b-cached").onclick = () => fire("cached");
-$("b-uncached").onclick = () => fire("uncached");
-$("b-flush").onclick = async () => { await api("/api/flush", { method: "POST" }); refresh(); };
-$("b-reset").onclick = () => { results = []; drawChart(); drawStats(null); };
-$("b-burst").onclick = async (e) => {
-  e.target.disabled = true;
-  for (let i = 0; i < 25; i++) await fire("cached");
-  e.target.disabled = false;
+};
+$("b-reset").onclick = () => { results = []; $("plan").innerHTML = ""; draw(); };
+$("b-plan").onclick = async (e) => {
+  const box = $("plan");
+  if (box.innerHTML) { box.innerHTML = ""; return; }
+  e.currentTarget.disabled = true;
+  const r = await api("/api/explain");
+  box.innerHTML = `<pre>${escapeHtml(r.plan.trim())}</pre>`;
+  e.currentTarget.disabled = false;
 };
 
-renderSteps();
-drawChart();
+/* Keyboard: 1 / 2 / 3 mirror the buttons. */
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
+  const b = { "1": "b-flush", "2": "b-read", "3": "b-uncached" }[e.key];
+  if (b) $(b).click();
+});
+
+/* ---------- state ---------- */
+async function refresh() {
+  let st = null;
+  try { st = await api("/api/state"); } catch (e) { /* still starting */ }
+  const pill = $("pill");
+  if (!st || st.error) {
+    pill.innerHTML = '<span class="dot off"></span>app unreachable';
+  } else {
+    pill.innerHTML = `<span class="dot ${st.cache_enabled ? "on" : "off"}"></span>CACHE_ENABLED=${st.cache_enabled}`;
+    $("s-bytes").textContent = st.key_bytes ? st.key_bytes + " B" : "–";
+    $("s-ttl").textContent = st.ttl ? st.ttl + " s" : "–";
+  }
+}
+
+draw();
 refresh();
 setInterval(refresh, 4000);
 </script>

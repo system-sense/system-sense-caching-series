@@ -9,34 +9,46 @@ compute, with the before-and-after latency measured on your own machine.
 docker compose up --build
 ```
 
-Then open **<http://localhost:8080>**.
+Compose prints the link when the stack is ready — most terminals let you click it:
 
-That is the whole setup. The page walks you through the experiment one button at
-a time and shows the real numbers as you go — no curl, no second terminal,
-nothing to install beyond Docker.
+```
+────────────────────────────────────────────────────────────
 
-First start seeds 100,000 users and 120,000 orders. It takes a few seconds and
-only happens once.
+   System Sense · Episode 1 — Cache-Aside
 
-### What the walkthrough shows you
+   Open  http://localhost:8080
 
-| Step | What happens |
+────────────────────────────────────────────────────────────
+```
+
+That is the whole setup. No curl, no second terminal, nothing to install beyond
+Docker. First start seeds 100,000 users and 120,000 orders; it takes a few
+seconds and only happens once.
+
+### The page
+
+Three buttons on the left, a live chart on the right. Every read you fire lands
+on the chart immediately.
+
+| Button | What it does |
 | --- | --- |
-| 1. Empty the cache | Deletes the `user:42` key, so the next read has to do real work. |
-| 2. First read | **MISS** — aggregates 120,000 order rows in Postgres, then stores the result. |
-| 3. Second read | **HIT** — same data, straight from memory, typically 100× faster. |
-| 4. The control | An endpoint that never touches Redis. Press it repeatedly: it stays slow. |
-| 5. The query plan | `EXPLAIN ANALYZE` for the read, showing why it was expensive to begin with. |
+| **Empty the cache** | Deletes the `user:42` key, so the next read has to do real work. |
+| **Read** | Cache-Aside. The first call is a **MISS** — it aggregates 120,000 order rows in Postgres and stores the result. Every call after is a **HIT**, straight from memory. |
+| **Read uncached** | Hits `/api/users/42/uncached`, which never touches Redis. Press it as often as you like: it stays slow. |
 
-**Step 4 is the one worth pausing on.** A reasonable person will suspect the
-second read was fast because *Postgres* warmed its own buffers, not because of
-the cache. `/api/users/42/uncached` runs the identical query and never consults
-Redis, so it stays slow no matter how often you call it. That is what turns the
-comparison from a claim into evidence.
+Press **Empty the cache**, then **Read** twice. That is the whole lesson — the
+chart shows a ~25 ms bar followed by a sub-millisecond one, and the headline
+comparison at the top reports the multiplier.
 
-Below the walkthrough is a free-play panel: fire cached and uncached reads in any
-order, burst 25 at once, clear the key, and watch the latency chart and the
-running medians update.
+**Then press Read uncached.** It is the control, and it is the reason to trust
+the rest. A reasonable person will suspect the second read was fast because
+*Postgres* warmed its own buffers rather than because of the cache. The uncached
+endpoint runs the identical query and never consults Redis, so it stays slow no
+matter how many times you call it. That is what turns the comparison from a
+claim into evidence.
+
+There is also **Show query plan** for the `EXPLAIN ANALYZE` behind the slow read,
+and keyboard shortcuts `1` / `2` / `3` for the three buttons.
 
 ---
 

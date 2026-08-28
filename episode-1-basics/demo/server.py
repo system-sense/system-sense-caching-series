@@ -9,7 +9,9 @@ It does three things and nothing else:
 It never fabricates a number. Every latency shown in the browser is the
 `X-Elapsed-Ms` the application itself measured for that request.
 """
+import asyncio
 import os
+from contextlib import asynccontextmanager
 
 import httpx
 import redis.asyncio as aioredis
@@ -21,9 +23,46 @@ APP_URL = os.getenv("APP_URL", "http://app:8000")
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 USER_ID = int(os.getenv("DEMO_USER_ID", "42"))
 
-app = FastAPI(title="Episode 1 demo")
 client = httpx.AsyncClient(timeout=30.0)
 rds = aioredis.from_url(REDIS_URL, decode_responses=True)
+
+PUBLIC_URL = os.getenv("PUBLIC_URL", "http://localhost:8080")
+
+
+async def _announce() -> None:
+    """Print the link once the stack can actually serve it.
+
+    Compose interleaves every service's output, and the seed takes a few
+    seconds, so a banner printed at import time scrolls away above the noise
+    and points at a page that is not ready. Waiting for the app to answer means
+    the link is both last and true. Terminals make http:// URLs clickable.
+    """
+    for _ in range(180):
+        try:
+            if (await client.get(f"{APP_URL}/health", timeout=2.0)).status_code == 200:
+                break
+        except httpx.HTTPError:
+            pass
+        await asyncio.sleep(1)
+
+    rule = "\u2500" * 60
+    print(
+        f"\n{rule}\n"
+        f"\n   System Sense \u00b7 Episode 1 \u2014 Cache-Aside\n"
+        f"\n   Open  {PUBLIC_URL}\n"
+        f"\n{rule}\n",
+        flush=True,
+    )
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    task = asyncio.create_task(_announce())
+    yield
+    task.cancel()
+
+
+app = FastAPI(title="Episode 1 demo", lifespan=lifespan)
 
 
 def _key(uid: int) -> str:
