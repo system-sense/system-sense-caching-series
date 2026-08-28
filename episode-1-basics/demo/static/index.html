@@ -83,6 +83,11 @@
   .cmp .lbl .v { font-family: var(--mono); font-weight: 700; }
   .cmp .track { background: var(--panel-2); border-radius: 5px; height: 30px; overflow: hidden; margin-bottom: 13px; }
   .cmp .fill { height: 100%; border-radius: 5px; transition: width .35s ease; min-width: 3px; }
+  .scale { float: right; text-transform: none; letter-spacing: 0; font-weight: 400; opacity: .7; }
+  .cmp .note { color: var(--dim); font-size: 11.5px; margin: -3px 0 5px; }
+  .histhead { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+              margin: 2px 0 9px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .histhead span { float: right; text-transform: none; letter-spacing: 0; opacity: .8; }
   .verdict { text-align: center; font-size: 15px; color: var(--dim); padding: 11px 0 3px; border-top: 1px solid var(--line); }
   .verdict b { color: var(--emerald); font-family: var(--mono); font-size: 21px; }
 
@@ -167,15 +172,9 @@
 
     <!-- ─────────── right: the graph ─────────── -->
     <div class="panel">
-      <h2>Response time</h2>
+      <h2>Response time <span class="scale">medians, linear</span></h2>
 
-      <div class="cmp" id="cmp" style="display:none">
-        <div class="lbl"><span>Cached (HIT)</span><span class="v" id="c-hit" style="color:var(--emerald)">–</span></div>
-        <div class="track"><div class="fill" id="f-hit" style="background:var(--emerald);width:0"></div></div>
-        <div class="lbl"><span>Uncached — straight to Postgres</span><span class="v" id="c-cold" style="color:var(--crimson)">–</span></div>
-        <div class="track"><div class="fill" id="f-cold" style="background:var(--crimson);width:0"></div></div>
-        <div class="verdict" id="verdict"></div>
-      </div>
+      <div class="cmp" id="cmp" style="display:none"></div>
 
       <div class="hist" id="hist">
         <p class="empty">No requests yet.<br>Use the buttons on the left — the chart fills in as you go.</p>
@@ -192,6 +191,13 @@ let results = [];
 
 const badge = (st) => `<span class="badge b-${st.toLowerCase()}">${st}</span>`;
 const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+/** The three things a request can be. They are not interchangeable. */
+const SERIES = [
+  { key: "HIT",    label: "Cached (HIT)",      note: "served from Redis",                 color: "var(--emerald)" },
+  { key: "MISS",   label: "First read (MISS)", note: "runs the query, then stores it",    color: "var(--crimson)" },
+  { key: "BYPASS", label: "Uncached (BYPASS)", note: "never touches Redis — the control", color: "var(--amber)" },
+];
+
 const median = (a) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
 
 /* ---------- chart ---------- */
@@ -210,7 +216,10 @@ function draw() {
   const max = Math.max(...results.map((r) => r.ms), 1);
   const w = (ms) => Math.max(2, ((Math.log10(Math.max(ms, 0.05)) + 1.5) / (Math.log10(max) + 1.5)) * 100);
 
-  hist.innerHTML = results.map((r) => `
+  // The two charts use different scales, so both say which. Above: linear, the
+  // true ratio. Here: log, or every sub-millisecond HIT would be one pixel.
+  hist.innerHTML = '<div class="histhead">every request<span>log scale</span></div>' +
+    results.map((r) => `
     <div class="row">
       <span>${badge(r.status)}</span>
       <div><div class="bar ${r.status.toLowerCase()}" style="width:${w(r.ms)}%"></div></div>
@@ -218,19 +227,35 @@ function draw() {
     </div>`).reverse().join("");
   hist.scrollTop = 0;
 
-  // Headline comparison: median HIT against median uncached.
-  const hit = median(results.filter((r) => r.status === "HIT").map((r) => r.ms));
-  const cold = median(results.filter((r) => r.status !== "HIT").map((r) => r.ms));
-  if (hit === null && cold === null) return;
+  // Three separate series. Folding MISS and BYPASS together and labelling the
+  // result "uncached" was wrong twice over: a MISS runs the query AND writes to
+  // Redis, and it comes from the cached endpoint. Only BYPASS is uncached.
+  const med = {};
+  for (const t of SERIES) {
+    med[t.key] = median(results.filter((r) => r.status === t.key).map((r) => r.ms));
+  }
+  const present = SERIES.filter((t) => med[t.key] !== null);
+  if (!present.length) return;
+
   $("cmp").style.display = "block";
-  const top = Math.max(hit ?? 0, cold ?? 0, 0.01);
-  $("c-hit").textContent = hit === null ? "–" : hit.toFixed(2) + " ms";
-  $("c-cold").textContent = cold === null ? "–" : cold.toFixed(1) + " ms";
-  $("f-hit").style.width = hit === null ? "0" : Math.max(1.5, (hit / top) * 100) + "%";
-  $("f-cold").style.width = cold === null ? "0" : Math.max(1.5, (cold / top) * 100) + "%";
-  $("verdict").innerHTML = hit && cold
-    ? `<b>${Math.round(cold / hit)}×</b> faster from cache`
-    : '<span style="font-size:13px">Press both Read buttons to compare</span>';
+  // Linear on purpose: this block IS the ratio, so the bars must be the ratio.
+  const top = Math.max(...present.map((t) => med[t.key]));
+  const hit = med.HIT;
+  const baseKey = med.BYPASS !== null ? "BYPASS" : med.MISS !== null ? "MISS" : null;
+
+  $("cmp").innerHTML =
+    present.map((t) => `
+      <div class="lbl"><span>${t.label}</span>
+        <span class="v" style="color:${t.color}">${med[t.key].toFixed(2)} ms</span></div>
+      <p class="note">${t.note}</p>
+      <div class="track"><div class="fill"
+        style="background:${t.color};width:${Math.max(0.4, (med[t.key] / top) * 100)}%"></div></div>`).join("") +
+    `<div class="verdict">${
+      hit !== null && baseKey
+        ? `<b>${Math.round(med[baseKey] / hit)}×</b> faster than the ${
+            baseKey === "BYPASS" ? "uncached read" : "first read"}`
+        : '<span style="font-size:13px">Read twice, then Read uncached, to compare</span>'
+    }</div>`;
 }
 
 /* ---------- actions ---------- */
