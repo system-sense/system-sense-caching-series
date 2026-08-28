@@ -34,10 +34,16 @@ services:
   app:
     build: .
     # ─────────────────────────────────────────────────────────────────────
-    #  THE KNOB. Set it to true, run the command again, watch the numbers.
+    #  THE KNOB.
+    #
+    #  Defaults to true so the walkthrough at localhost:8080 works the moment
+    #  the stack is up. To see what life is like without a cache, start with
+    #  it off and watch every read stay slow:
+    #
+    #      CACHE_ENABLED=false docker compose up
     # ─────────────────────────────────────────────────────────────────────
     environment:
-      CACHE_ENABLED: "${CACHE_ENABLED:-false}"
+      CACHE_ENABLED: "${CACHE_ENABLED:-true}"
       CACHE_TTL_SECONDS: "300"
       DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
       REDIS_URL: "redis://redis:6379/0"
@@ -46,6 +52,22 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # The clickable walkthrough. Starts with everything else, so the first thing
+  # a viewer does after `docker compose up` is open a page, not read a manual.
+  demo:
+    build: ./demo
+    environment:
+      APP_URL: "http://app:8000"
+      REDIS_URL: "redis://redis:6379/0"
+      DEMO_USER_ID: "42"
+    ports:
+      - "8080:8080"
+    depends_on:
+      app:
+        condition: service_started
       redis:
         condition: service_healthy
 

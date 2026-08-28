@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cache-Aside · System Sense Episode 1</title>
+<style>
+  /* Everything is inline on purpose: the demo has to work with no internet. */
+  :root {
+    --bg: #0b0f19;
+    --panel: #141b2d;
+    --panel-2: #1e293b;
+    --line: #2b3752;
+    --text: #e8edf7;
+    --dim: #94a3b8;
+    --sky: #38bdf8;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --crimson: #ef4444;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); line-height: 1.5;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 32px 20px 72px; }
+
+  header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  h1 { font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+  .ep { color: var(--dim); font-size: 14px; }
+  .sub { color: var(--dim); font-size: 15px; margin: 0 0 26px; }
+
+  .pill {
+    margin-left: auto; font-family: var(--mono); font-size: 12px;
+    padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--panel); white-space: nowrap;
+  }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+  .on { background: var(--emerald); } .off { background: var(--crimson); }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+  .panel h2 { font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); margin: 0 0 16px; font-weight: 600; }
+
+  /* ---- stepper ---- */
+  .step { display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; padding: 14px 0; border-top: 1px solid var(--line); align-items: start; }
+  .step:first-of-type { border-top: 0; }
+  .num {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--mono); font-size: 13px; border: 1px solid var(--line);
+    color: var(--dim); background: var(--panel-2);
+  }
+  .step.done .num { background: var(--emerald); border-color: var(--emerald); color: #05231a; font-weight: 700; }
+  .step.active .num { border-color: var(--sky); color: var(--sky); }
+  .step h3 { margin: 2px 0 4px; font-size: 16px; font-weight: 600; }
+  .why { color: var(--dim); font-size: 14px; margin: 0; }
+  .out { margin-top: 9px; font-family: var(--mono); font-size: 14px; display: none; }
+  .step.done .out { display: block; }
+
+  button {
+    font: inherit; font-size: 14px; padding: 8px 15px; border-radius: 8px; cursor: pointer;
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--line);
+    white-space: nowrap; transition: border-color .12s, background .12s;
+  }
+  button:hover:not(:disabled) { border-color: var(--sky); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  button.primary { background: var(--sky); color: #04121c; border-color: var(--sky); font-weight: 600; }
+  button.primary:hover:not(:disabled) { filter: brightness(1.08); }
+
+  .badge { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: 700; }
+  .b-hit { background: rgba(16,185,129,.16); color: var(--emerald); }
+  .b-miss { background: rgba(239,68,68,.16); color: var(--crimson); }
+  .b-bypass { background: rgba(245,158,11,.16); color: var(--amber); }
+
+  /* ---- chart ---- */
+  .row { display: grid; grid-template-columns: 62px 1fr 92px; gap: 10px; align-items: center; margin-bottom: 5px; font-family: var(--mono); font-size: 13px; }
+  .bar { height: 17px; border-radius: 3px; min-width: 3px; transition: width .25s ease; }
+  .bar.hit { background: var(--emerald); }
+  .bar.miss { background: var(--crimson); }
+  .bar.bypass { background: var(--amber); }
+  .ms { text-align: right; color: var(--dim); }
+
+  .controls { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 18px; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 14px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .stat .k { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat .v { font-family: var(--mono); font-size: 21px; margin-top: 3px; }
+
+  pre {
+    background: #060a12; border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px; overflow-x: auto; font-family: var(--mono); font-size: 12.5px;
+    color: #c9d4e8; margin: 10px 0 0; line-height: 1.45;
+  }
+  .empty { color: var(--dim); font-size: 14px; font-style: italic; }
+  code { font-family: var(--mono); background: var(--panel-2); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  .foot { color: var(--dim); font-size: 13px; }
+  .foot a { color: var(--sky); }
+  .warn { color: var(--amber); font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Cache-Aside</h1>
+    <span class="ep">System Sense · Episode 1</span>
+    <span class="pill" id="pill"><span class="dot off"></span>connecting…</span>
+  </header>
+  <p class="sub">Every number on this page is measured by the application, on your machine, right now.</p>
+
+  <div class="panel">
+    <h2>Walkthrough</h2>
+    <div id="steps"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Free play</h2>
+    <div class="controls">
+      <button id="b-cached">Cached read</button>
+      <button id="b-uncached">Uncached read</button>
+      <button id="b-flush">Clear the key</button>
+      <button id="b-burst">Fire 25</button>
+      <button id="b-reset">Reset chart</button>
+    </div>
+    <div id="chart"><p class="empty">No requests yet. Press a button above.</p></div>
+    <div class="stats">
+      <div class="stat"><div class="k">Cached (HIT)</div><div class="v" id="s-hit">–</div></div>
+      <div class="stat"><div class="k">Uncached</div><div class="v" id="s-cold">–</div></div>
+      <div class="stat"><div class="k">Speed-up</div><div class="v" id="s-x">–</div></div>
+      <div class="stat"><div class="k">Key size</div><div class="v" id="s-bytes">–</div></div>
+      <div class="stat"><div class="k">Key TTL</div><div class="v" id="s-ttl">–</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Prefer the terminal?</h2>
+    <p class="foot">
+      Same two endpoints, no UI involved:<br><br>
+      <code>curl -sD- -o/dev/null localhost:8000/api/users/42</code><br>
+      <code>curl -sD- -o/dev/null localhost:8000/api/users/42/uncached</code><br><br>
+      Read the <code>X-Cache</code> and <code>X-Elapsed-Ms</code> response headers. The README has more.
+    </p>
+  </div>
+
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const api = async (p, opt) => (await fetch(p, opt)).json();
+
+let results = [];      // {status, ms}
+let cacheEnabled = true;
+
+/* ---------- the guided walkthrough ---------------------------------- */
+const STEPS = [
+  {
+    title: "Empty the cache",
+    why: "Start from a known state, so the next read has to do the real work.",
+    label: "Do it",
+    run: async () => {
+      await api("/api/flush", { method: "POST" });
+      return { text: "key user:42 deleted" };
+    },
+  },
+  {
+    title: "First read — the MISS",
+    why: "Nothing in the cache, so the app runs the real query: 120,000 order rows aggregated in Postgres. Then it stores the result on the way out.",
+    label: "Read",
+    run: async () => {
+      const r = await api("/api/read?mode=cached");
+      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
+    },
+  },
+  {
+    title: "Second read — the HIT",
+    why: "Same request, same data. This time it is already in Redis, and Postgres is never asked.",
+    label: "Read again",
+    run: async () => {
+      const r = await api("/api/read?mode=cached");
+      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
+    },
+  },
+  {
+    title: "The control — was it really the cache?",
+    why: "A fair objection: maybe the second read was fast because Postgres warmed its own buffers. This endpoint never touches Redis. Press it as many times as you like — it stays slow. That is the cache doing the work, not the database.",
+    label: "Read uncached",
+    run: async () => {
+      const r = await api("/api/read?mode=uncached");
+      return { text: `${r.ms.toFixed(2)} ms`, status: r.status, ms: r.ms, record: true };
+    },
+  },
+  {
+    title: "Why was it ever slow?",
+    why: "The query plan behind a profile read. A sequential scan over every order row, then a hash aggregate — expensive to compute, and it barely changes from day to day. Exactly the shape of thing worth caching.",
+    label: "Show the plan",
+    run: async () => {
+      const r = await api("/api/explain");
+      return { pre: r.plan.trim() };
+    },
+  },
+];
+
+function renderSteps() {
+  $("steps").innerHTML = STEPS.map((s, i) => `
+    <div class="step" id="step-${i}">
+      <div class="num">${i + 1}</div>
+      <div>
+        <h3>${s.title}</h3>
+        <p class="why">${s.why}</p>
+        <div class="out" id="out-${i}"></div>
+      </div>
+      <button id="run-${i}" ${i === 0 ? 'class="primary"' : ""}>${s.label}</button>
+    </div>`).join("");
+
+  STEPS.forEach((s, i) => {
+    $(`run-${i}`).onclick = async () => {
+      const btn = $(`run-${i}`);
+      btn.disabled = true;
+      btn.textContent = "…";
+      try {
+        const out = await s.run();
+        const el = $(`out-${i}`);
+        if (out.pre) {
+          el.innerHTML = `<pre>${escapeHtml(out.pre)}</pre>`;
+        } else if (out.status) {
+          el.innerHTML = `${badge(out.status)} <span style="margin-left:8px">${out.text}</span>`;
+        } else {
+          el.textContent = out.text;
+        }
+        if (out.record) push(out.status, out.ms);
+        $(`step-${i}`).classList.add("done");
+        const next = $(`run-${i + 1}`);
+        if (next) next.className = "primary";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = s.label;
+        refresh();
+      }
+    };
+  });
+}
+
+const escapeHtml = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const badge = (st) => `<span class="badge b-${st.toLowerCase()}">${st}</span>`;
+
+/* ---------- free play ------------------------------------------------ */
+function push(status, ms) {
+  if (status === undefined) return;
+  results.push({ status, ms });
+  if (results.length > 40) results.shift();
+  drawChart();
+}
+
+function drawChart() {
+  const box = $("chart");
+  if (!results.length) {
+    box.innerHTML = '<p class="empty">No requests yet. Press a button above.</p>';
+    return;
+  }
+  // Log scale: on a linear axis a 0.4 ms bar next to a 48 ms bar is invisible,
+  // and the whole point is that the reader can see both.
+  const max = Math.max(...results.map((r) => r.ms), 1);
+  const scale = (ms) => Math.max(2, (Math.log10(Math.max(ms, 0.01)) + 2) / (Math.log10(max) + 2) * 100);
+
+  box.innerHTML = results.map((r) => `
+    <div class="row">
+      <span>${badge(r.status)}</span>
+      <div><div class="bar ${r.status.toLowerCase()}" style="width:${scale(r.ms)}%"></div></div>
+      <span class="ms">${r.ms.toFixed(2)} ms</span>
+    </div>`).join("");
+}
+
+const median = (a) => {
+  if (!a.length) return null;
+  const s = [...a].sort((x, y) => x - y);
+  return s[Math.floor(s.length / 2)];
+};
+
+function drawStats(state) {
+  const hit = median(results.filter((r) => r.status === "HIT").map((r) => r.ms));
+  const cold = median(results.filter((r) => r.status !== "HIT").map((r) => r.ms));
+  $("s-hit").textContent = hit === null ? "–" : hit.toFixed(2) + " ms";
+  $("s-cold").textContent = cold === null ? "–" : cold.toFixed(1) + " ms";
+  $("s-x").textContent = hit && cold ? Math.round(cold / hit) + "×" : "–";
+  if (state) {
+    $("s-bytes").textContent = state.key_bytes ? state.key_bytes + " B" : "–";
+    $("s-ttl").textContent = state.ttl ? state.ttl + " s" : "–";
+  }
+}
+
+async function refresh() {
+  let state = null;
+  try {
+    state = await api("/api/state");
+  } catch (e) { /* app may still be starting */ }
+
+  const pill = $("pill");
+  if (!state || state.error) {
+    pill.innerHTML = '<span class="dot off"></span>app unreachable';
+  } else {
+    cacheEnabled = state.cache_enabled;
+    pill.innerHTML = `<span class="dot ${cacheEnabled ? "on" : "off"}"></span>CACHE_ENABLED=${cacheEnabled}`;
+  }
+  drawStats(state);
+}
+
+async function fire(mode) {
+  const r = await api(`/api/read?mode=${mode}`);
+  if (!r.error) push(r.status, r.ms);
+  refresh();
+}
+
+$("b-cached").onclick = () => fire("cached");
+$("b-uncached").onclick = () => fire("uncached");
+$("b-flush").onclick = async () => { await api("/api/flush", { method: "POST" }); refresh(); };
+$("b-reset").onclick = () => { results = []; drawChart(); drawStats(null); };
+$("b-burst").onclick = async (e) => {
+  e.target.disabled = true;
+  for (let i = 0; i < 25; i++) await fire("cached");
+  e.target.disabled = false;
+};
+
+renderSteps();
+drawChart();
+refresh();
+setInterval(refresh, 4000);
+</script>
+</body>
+</html>

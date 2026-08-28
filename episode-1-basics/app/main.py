@@ -94,6 +94,35 @@ async def read_user(uid: int):
     )
 
 
+@app.get("/api/users/{uid}/uncached")
+async def read_user_uncached(uid: int):
+    """The same read, always straight to Postgres. Never touches Redis.
+
+    This is the control. Without it, someone can reasonably object that the
+    second request was fast because *Postgres* had warmed its buffers, not
+    because of the cache. Hit this endpoint as often as you like: it stays
+    slow, which is what makes the comparison an argument rather than a claim.
+    """
+    started = time.perf_counter()
+    profile = await load_profile(uid, state["db"])
+    elapsed_ms = (time.perf_counter() - started) * 1000
+
+    if profile is None:
+        return JSONResponse({"detail": "user not found"}, status_code=404)
+
+    print(f"GET /api/users/{uid}/uncached  BYPASS  {elapsed_ms:7.2f} ms", flush=True)
+
+    return Response(
+        content=json.dumps(profile),
+        media_type="application/json",
+        headers={
+            "X-Cache": "BYPASS",
+            "X-Elapsed-Ms": f"{elapsed_ms:.2f}",
+            "X-Cache-Enabled": str(config.CACHE_ENABLED).lower(),
+        },
+    )
+
+
 @app.get("/api/users/{uid}/explain")
 async def explain_user(uid: int):
     """EXPLAIN ANALYZE for the expensive query, as plain text."""
