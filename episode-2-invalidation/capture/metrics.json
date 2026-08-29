@@ -1,0 +1,95 @@
+{
+  "race": {
+    "iterations": 20,
+    "stall_ms": 400,
+    "lag_ms": 150,
+    "policies": {
+      "update": {
+        "stale": 20,
+        "consistent": 0,
+        "stale_pct": 100.0,
+        "db_city": "Berlin",
+        "cache_city": "Toronto",
+        "next_read_status": [
+          "HIT"
+        ],
+        "next_read_median_ms": 0.43
+      },
+      "delete": {
+        "stale": 0,
+        "consistent": 20,
+        "stale_pct": 0.0,
+        "db_city": "Berlin",
+        "cache_city": "Berlin",
+        "next_read_status": [
+          "MISS"
+        ],
+        "next_read_median_ms": 42.17
+      },
+      "write_through": {
+        "stale": 20,
+        "consistent": 0,
+        "stale_pct": 100.0,
+        "db_city": "Toronto",
+        "cache_city": "Berlin",
+        "next_read_status": [
+          "HIT"
+        ],
+        "next_read_median_ms": 0.41
+      },
+      "write_behind": {
+        "stale": 20,
+        "consistent": 0,
+        "stale_pct": 100.0,
+        "db_city": "Toronto",
+        "cache_city": "Berlin",
+        "next_read_status": [
+          "HIT"
+        ],
+        "next_read_median_ms": 0.46
+      }
+    }
+  },
+  "stale_window": {
+    "observed_s": 30,
+    "still_stale_throughout": true,
+    "db_city": "Berlin",
+    "cache_city": "Toronto",
+    "ttl_remaining_s": 270,
+    "repaired_by": "cache TTL expiry, and nothing else"
+  },
+  "write_behind_loss": {
+    "flush_interval_ms": 10000,
+    "queued_db_city": "Lisbon",
+    "queued_cache_city": "Berlin",
+    "queue_depth": 1,
+    "db_city_after_restart": "Lisbon",
+    "cache_city_after_restart": "Berlin",
+    "write_lost": true
+  },
+  "read_after_write": {
+    "delete": {
+      "first_read_status": "MISS",
+      "first_read_median_ms": 22.29,
+      "second_read_median_ms": 0.17,
+      "samples": 5
+    },
+    "write_through": {
+      "first_read_status": "HIT",
+      "first_read_median_ms": 0.15,
+      "second_read_median_ms": 0.15,
+      "samples": 5
+    }
+  },
+  "invalidation_miss_penalty_ms": 22.15,
+  "cache_hit": {
+    "name": "cache_hit",
+    "samples": 19,
+    "min_ms": 0.13,
+    "median_ms": 0.14,
+    "p95_ms": 0.15,
+    "max_ms": 0.15
+  },
+  "uncached_read_ms": 20.65,
+  "cache_ttl_seconds": 300
+}

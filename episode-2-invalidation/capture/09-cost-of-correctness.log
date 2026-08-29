@@ -1,0 +1,22 @@
+policy=delete
+  first read after write   MISS    26.84 ms
+  second read              HIT      0.20 ms
+  first read after write   MISS    23.12 ms
+  second read              HIT      0.17 ms
+  first read after write   MISS    22.29 ms
+  second read              HIT      0.19 ms
+  first read after write   MISS    21.30 ms
+  second read              HIT      0.16 ms
+  first read after write   MISS    20.04 ms
+  second read              HIT      0.10 ms
+policy=write_through
+  first read after write   HIT      0.19 ms
+  second read              HIT      0.16 ms
+  first read after write   HIT      0.15 ms
+  second read              HIT      0.17 ms
+  first read after write   HIT      0.15 ms
+  second read              HIT      0.15 ms
+  first read after write   HIT      0.15 ms
+  second read              HIT      0.12 ms
+  first read after write   HIT      0.14 ms
+  second read              HIT      0.14 ms

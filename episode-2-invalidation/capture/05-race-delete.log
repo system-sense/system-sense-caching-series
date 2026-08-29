@@ -1,0 +1,42 @@
+race: policy=delete iterations=20 stall=400ms lag=150ms
+      writer A -> Toronto (stalled), writer B -> Berlin, baseline Lisbon
+
+  run 1   db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.61 ms   OK   
+  run 2   db=Berlin    cache=Berlin    next-read=Berlin    MISS   44.24 ms   OK   
+  run 3   db=Berlin    cache=Berlin    next-read=Berlin    MISS   43.30 ms   OK   
+  run 4   db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.07 ms   OK   
+  run 5   db=Berlin    cache=Berlin    next-read=Berlin    MISS   41.31 ms   OK   
+  run 6   db=Berlin    cache=Berlin    next-read=Berlin    MISS   44.50 ms   OK   
+  run 7   db=Berlin    cache=Berlin    next-read=Berlin    MISS   40.64 ms   OK   
+  run 8   db=Berlin    cache=Berlin    next-read=Berlin    MISS   36.01 ms   OK   
+  run 9   db=Berlin    cache=Berlin    next-read=Berlin    MISS   28.15 ms   OK   
+  run 10  db=Berlin    cache=Berlin    next-read=Berlin    MISS   37.03 ms   OK   
+  run 11  db=Berlin    cache=Berlin    next-read=Berlin    MISS   40.24 ms   OK   
+  run 12  db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.46 ms   OK   
+  run 13  db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.79 ms   OK   
+  run 14  db=Berlin    cache=Berlin    next-read=Berlin    MISS   31.63 ms   OK   
+  run 15  db=Berlin    cache=Berlin    next-read=Berlin    MISS   45.15 ms   OK   
+  run 16  db=Berlin    cache=Berlin    next-read=Berlin    MISS   41.64 ms   OK   
+  run 17  db=Berlin    cache=Berlin    next-read=Berlin    MISS   44.48 ms   OK   
+  run 18  db=Berlin    cache=Berlin    next-read=Berlin    MISS   27.20 ms   OK   
+  run 19  db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.37 ms   OK   
+  run 20  db=Berlin    cache=Berlin    next-read=Berlin    MISS   42.28 ms   OK   
+
+  0/20 runs left the cache disagreeing with the database  (0.0%)
+{
+  "policy": "delete",
+  "label": "delete",
+  "iterations": 20,
+  "stall_ms": 400,
+  "lag_ms": 150,
+  "stale": 0,
+  "consistent": 20,
+  "stale_pct": 0.0,
+  "read_after_race_median_ms": 42.17,
+  "read_after_race_status": [
+    "MISS"
+  ],
+  "db_city": "Berlin",
+  "cache_city": "Berlin",
+  "ttl_on_stale_key": null
+}

@@ -1,0 +1,108 @@
+ Image episode-2-invalidation-app Building 
+ Image episode-2-invalidation-demo Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.16kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 DONE 0.0s
+
+#3 [demo internal] load build definition from Dockerfile
+#3 transferring dockerfile: 298B done
+#3 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#4 [app internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.3s
+
+#5 [demo internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [app internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [demo 1/5] FROM docker.io/library/python:3.12-slim@sha256:09f7da3bc104798d0afb40bc08d23ab2da20a76130cec1f2ef170848f5d85217
+#7 DONE 0.0s
+
+#8 [app internal] load build context
+#8 transferring context: 255B done
+#8 DONE 0.0s
+
+#9 [demo internal] load build context
+#9 transferring context: 129B done
+#9 DONE 0.0s
+
+#10 [app 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [app 5/5] COPY app ./app
+#12 CACHED
+
+#13 [demo 5/6] COPY server.py .
+#13 CACHED
+
+#14 [demo 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [demo 3/6] COPY requirements.txt .
+#15 CACHED
+
+#16 [app 2/5] WORKDIR /srv
+#16 CACHED
+
+#17 [demo 6/6] COPY static ./static
+#17 CACHED
+
+#18 [demo] exporting to image
+#18 exporting layers done
+#18 writing image sha256:63a67292abc7eed8137671ed8be7ff043cf232f66332d4027183f55d8d601963 done
+#18 naming to docker.io/library/episode-2-invalidation-demo done
+#18 DONE 0.0s
+
+#19 [app] exporting to image
+#19 exporting layers done
+#19 writing image sha256:37097044a4baad7164289357ce3b54e317b2fe1351e92ab12b59208f15427417 done
+#19 naming to docker.io/library/episode-2-invalidation-app done
+#19 DONE 0.0s
+
+#20 [demo] resolving provenance for metadata file
+#20 DONE 0.0s
+
+#21 [app] resolving provenance for metadata file
+#21 DONE 0.0s
+ Image episode-2-invalidation-demo Built 
+ Image episode-2-invalidation-app Built 
+ Network episode-2-invalidation_default Creating 
+ Network episode-2-invalidation_default Created 
+ Volume episode-2-invalidation_pgdata Creating 
+ Volume episode-2-invalidation_pgdata Created 
+ Container episode-2-invalidation-postgres-1 Creating 
+ Container episode-2-invalidation-redis-1 Creating 
+ Container episode-2-invalidation-redis-1 Created 
+ Container episode-2-invalidation-postgres-1 Created 
+ Container episode-2-invalidation-app-1 Creating 
+ Container episode-2-invalidation-app-1 Created 
+ Container episode-2-invalidation-demo-1 Creating 
+ Container episode-2-invalidation-demo-1 Created 
+ Container episode-2-invalidation-postgres-1 Starting 
+ Container episode-2-invalidation-redis-1 Starting 
+ Container episode-2-invalidation-redis-1 Started 
+ Container episode-2-invalidation-postgres-1 Started 
+ Container episode-2-invalidation-redis-1 Waiting 
+ Container episode-2-invalidation-postgres-1 Waiting 
+ Container episode-2-invalidation-redis-1 Healthy 
+ Container episode-2-invalidation-postgres-1 Healthy 
+ Container episode-2-invalidation-app-1 Starting 
+ Container episode-2-invalidation-app-1 Started 
+ Container episode-2-invalidation-redis-1 Waiting 
+ Container episode-2-invalidation-redis-1 Healthy 
+ Container episode-2-invalidation-demo-1 Starting 
+ Container episode-2-invalidation-demo-1 Started 

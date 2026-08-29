@@ -1,0 +1,17 @@
+{
+  "policy": "update",
+  "label": "update",
+  "iterations": 20,
+  "stall_ms": 400,
+  "lag_ms": 150,
+  "stale": 20,
+  "consistent": 0,
+  "stale_pct": 100.0,
+  "read_after_race_median_ms": 0.43,
+  "read_after_race_status": [
+    "HIT"
+  ],
+  "db_city": "Berlin",
+  "cache_city": "Toronto",
+  "ttl_on_stale_key": 300
+}

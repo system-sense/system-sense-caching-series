@@ -1,0 +1,42 @@
+race: policy=write_behind iterations=20 stall=400ms lag=150ms
+      writer A -> Toronto (stalled), writer B -> Berlin, baseline Lisbon
+
+  run 1   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.52 ms   STALE
+  run 2   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.49 ms   STALE
+  run 3   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.44 ms   STALE
+  run 4   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.40 ms   STALE
+  run 5   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.40 ms   STALE
+  run 6   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.47 ms   STALE
+  run 7   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.51 ms   STALE
+  run 8   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.47 ms   STALE
+  run 9   db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.41 ms   STALE
+  run 10  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.48 ms   STALE
+  run 11  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.43 ms   STALE
+  run 12  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.27 ms   STALE
+  run 13  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.20 ms   STALE
+  run 14  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.59 ms   STALE
+  run 15  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.46 ms   STALE
+  run 16  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.54 ms   STALE
+  run 17  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.46 ms   STALE
+  run 18  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.32 ms   STALE
+  run 19  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.38 ms   STALE
+  run 20  db=Toronto   cache=Berlin    next-read=Berlin    HIT     0.47 ms   STALE
+
+  20/20 runs left the cache disagreeing with the database  (100.0%)
+{
+  "policy": "write_behind",
+  "label": "write_behind",
+  "iterations": 20,
+  "stall_ms": 400,
+  "lag_ms": 150,
+  "stale": 20,
+  "consistent": 0,
+  "stale_pct": 100.0,
+  "read_after_race_median_ms": 0.46,
+  "read_after_race_status": [
+    "HIT"
+  ],
+  "db_city": "Toronto",
+  "cache_city": "Berlin",
+  "ttl_on_stale_key": 298
+}

@@ -1,0 +1,17 @@
+{
+  "policy": "delete",
+  "label": "delete",
+  "iterations": 20,
+  "stall_ms": 400,
+  "lag_ms": 150,
+  "stale": 0,
+  "consistent": 20,
+  "stale_pct": 0.0,
+  "read_after_race_median_ms": 42.17,
+  "read_after_race_status": [
+    "MISS"
+  ],
+  "db_city": "Berlin",
+  "cache_city": "Berlin",
+  "ttl_on_stale_key": null
+}

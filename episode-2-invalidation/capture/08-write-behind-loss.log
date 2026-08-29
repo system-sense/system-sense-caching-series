@@ -1,0 +1,7 @@
+write-behind, flush interval 10s: what happens if the process dies first
+  wrote city=Berlin. queued, not yet flushed:
+    db=Lisbon    cache=Berlin    queue_depth=1
+  killing the app before the flusher runs
+  after restart:
+    db=Lisbon    cache=Berlin    agree=False
+  the write is gone from Postgres. the cache is the only place it ever existed.

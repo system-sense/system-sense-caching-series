@@ -1,0 +1,7 @@
+the cache and the database have just disagreed. watching them not fix it:
+  t+ 0s  db=Berlin    cache=Toronto   agree=False ttl=300s
+  t+ 5s  db=Berlin    cache=Toronto   agree=False ttl=295s
+  t+15s  db=Berlin    cache=Toronto   agree=False ttl=285s
+  t+30s  db=Berlin    cache=Toronto   agree=False ttl=270s
+
+nothing above is a bug report, a retry or an alarm. it is just wrong.

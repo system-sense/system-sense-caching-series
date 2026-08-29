@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    # JIT compilation costs ~90 ms to compile a query that runs in tens of ms,
+    # which is noise, not signal. Disabling it for short OLTP queries is a normal
+    # production setting, and it keeps EXPLAIN ANALYZE honest here.
+    command: ["postgres", "-c", "jit=off"]
+    environment:
+      POSTGRES_USER: sysense
+      POSTGRES_PASSWORD: sysense
+      POSTGRES_DB: sysense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sysense -d sysense"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build: .
+    # ──────────────────────────────────────────────────────────────────
+    #  THE KNOB.
+    #
+    #  Episode 1's cache is on and stays on. What changes here is what a write
+    #  does to the cache:
+    #
+    #      update         write the DB, then write the cache   (the default,
+    #                     because it is what everyone writes first -- and it
+    #                     is the bug this episode is about)
+    #      delete         write the DB, then delete the key    (the fix)
+    #      write_through  cache and DB written together
+    #      write_behind   cache now, DB later
+    #
+    #  Try the fix without editing a file:
+    #
+    #      WRITE_POLICY=delete docker compose up --build
+    # ──────────────────────────────────────────────────────────────────
+    environment:
+      CACHE_ENABLED: "true"
+      CACHE_TTL_SECONDS: "300"
+      WRITE_POLICY: "${WRITE_POLICY:-update}"
+      WRITE_BEHIND_FLUSH_MS: "${WRITE_BEHIND_FLUSH_MS:-1000}"
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      REDIS_URL: "redis://redis:6379/0"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # The clickable walkthrough. Starts with everything else, so the first thing
+  # a viewer does after `docker compose up` is open a page, not read a manual.
+  demo:
+    build: ./demo
+    environment:
+      APP_URL: "http://app:8000"
+      REDIS_URL: "redis://redis:6379/0"
+      DEMO_USER_ID: "42"
+    ports:
+      - "8080:8080"
+    depends_on:
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
+
+volumes:
+  pgdata:
