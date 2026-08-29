@@ -1,5 +1,7 @@
 # Episode 1 — The Basics: Why Caching Makes Systems Fast
 
+**▶ Watch the episode:** <https://youtu.be/qk1dwB6xWD0>
+
 Cache-Aside, demonstrated on a profile endpoint that is genuinely expensive to
 compute, with the before-and-after latency measured on your own machine.
 

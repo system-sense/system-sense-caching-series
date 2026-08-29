@@ -1,5 +1,7 @@
 # Episode 2 — The Invalidation Nightmare
 
+**▶ Watch the episode:** <https://youtu.be/-PhwgL1FFSc>
+
 > *"There are only two hard things in Computer Science: cache invalidation and
 > naming things."* — Phil Karlton
 
