@@ -1,0 +1,17 @@
+== undefended: every reader ran the aggregate
+
+200 readers, one key, one expiry. Postgres logged 1800 lines.
+50 of them are executions of the profile aggregate, and
+150 are statements carrying $1 = '42'.
+
+postgres-1  | 2026-08-30 18:37:17.541 UTC [102] LOG:  execute __asyncpg_stmt_19__: 
+postgres-1  | 2026-08-30 18:37:17.541 UTC [102] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:17.542 UTC [89] LOG:  execute __asyncpg_stmt_13__: 
+postgres-1  | 2026-08-30 18:37:17.542 UTC [89] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:17.542 UTC [80] LOG:  execute __asyncpg_stmt_8__: 
+postgres-1  | 2026-08-30 18:37:17.542 UTC [80] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:17.542 UTC [79] LOG:  execute __asyncpg_stmt_7__: 
+postgres-1  | 2026-08-30 18:37:17.542 UTC [79] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:17.543 UTC [94] LOG:  execute __asyncpg_stmt_f__: 
+postgres-1  | 2026-08-30 18:37:17.543 UTC [94] DETAIL:  parameters: $1 = '42'
+PG_LOG_COUNT {"run":"05-pg-log-none","log_lines":1800,"aggregates":50,"statements_for_hot_key":150}

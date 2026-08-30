@@ -1,0 +1,61 @@
+ Container episode-4-stampede-app-1 Running 
+ Container episode-4-stampede-postgres-1 Running 
+ Container episode-4-stampede-redis-1 Running 
+ Container episode-4-stampede-redis-1 Waiting 
+ Container episode-4-stampede-postgres-1 Waiting 
+ Container episode-4-stampede-redis-1 Healthy 
+ Container episode-4-stampede-postgres-1 Healthy 
+ Container episode-4-stampede-load-test-run-95f0a582d7cb Creating 
+ Container episode-4-stampede-load-test-run-95f0a582d7cb Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/stampede.js
+        output: -
+
+     scenarios: (100.00%) 2 scenarios, 201 max VUs, 2m30s max duration (incl. graceful stop):
+              * burst: 1 iterations for each of 200 VUs (maxDuration: 2m0s, gracefulStop: 30s)
+              * killer: 1 iterations for each of 1 VUs (maxDuration: 2m0s, exec: expire, gracefulStop: 30s)
+
+
+running (0m01.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m01.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m01.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m02.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m02.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m02.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m03.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m03.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m03.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m04.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m04.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m04.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m05.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m05.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m05.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m06.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m06.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m06.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m07.0s), 201/201 VUs, 0 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m07.0s/2m0s  000/200 iters, 1 per VU
+killer   [   0% ] 1 VUs    0m07.0s/2m0s  0/1 iters, 1 per VU
+
+running (0m08.0s), 200/201 VUs, 1 complete and 0 interrupted iterations
+burst    [   0% ] 200 VUs  0m08.0s/2m0s  000/200 iters, 1 per VU
+killer ✓ [ 100% ] 1 VUs    0m07.5s/2m0s  1/1 iters, 1 per VU
+K6_SUMMARY {"attack":"stampede-lock","hot_key":"user:42","vus":200,"requests":401,"rps":49.7,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.71,"med":20.74,"avg":26.46,"p90":51.19,"p95":56.43,"p99":56.91,"max":57.03},"served_by":{"leader":1,"wait_hit":199},"latency_by_layer":{"leader":{"med":36.65,"p95":36.65,"p99":36.65,"max":36.65},"reader":{"med":44.16,"p95":56.77,"p99":56.93,"max":57.03},"waithit":{"med":44.18,"p95":56.77,"p99":56.93,"max":57.03}}}
+
+running (0m08.1s), 000/201 VUs, 201 complete and 0 interrupted iterations
+burst  ✓ [ 100% ] 200 VUs  0m08.1s/2m0s  200/200 iters, 1 per VU
+killer ✓ [ 100% ] 1 VUs    0m07.5s/2m0s  1/1 iters, 1 per VU

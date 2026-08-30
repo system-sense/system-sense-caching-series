@@ -1,0 +1,57 @@
+ Container episode-4-stampede-redis-1 Running 
+ Container episode-4-stampede-app-1 Running 
+ Container episode-4-stampede-postgres-1 Running 
+ Container episode-4-stampede-redis-1 Waiting 
+ Container episode-4-stampede-postgres-1 Waiting 
+ Container episode-4-stampede-redis-1 Healthy 
+ Container episode-4-stampede-postgres-1 Healthy 
+ Container episode-4-stampede-load-test-run-9a06e15f5fde Creating 
+ Container episode-4-stampede-load-test-run-9a06e15f5fde Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/ceiling.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1000 max VUs, 40s max duration (incl. graceful stop):
+              * ceiling: 2500.00 iterations/s for 10s (maxVUs: 200-1000, gracefulStop: 30s)
+
+
+running (01.0s), 0001/0200 VUs, 2466 complete and 0 interrupted iterations
+ceiling   [  10% ] 0001/0200 VUs  01.0s/10s  2500.00 iters/s
+
+running (02.0s), 0001/0200 VUs, 4967 complete and 0 interrupted iterations
+ceiling   [  20% ] 0001/0200 VUs  02.0s/10s  2500.00 iters/s
+
+running (03.0s), 0001/0200 VUs, 7467 complete and 0 interrupted iterations
+ceiling   [  30% ] 0001/0200 VUs  03.0s/10s  2500.00 iters/s
+
+running (04.0s), 0002/0200 VUs, 9964 complete and 0 interrupted iterations
+ceiling   [  40% ] 0004/0200 VUs  04.0s/10s  2500.00 iters/s
+
+running (05.4s), 0003/0200 VUs, 12467 complete and 0 interrupted iterations
+ceiling   [  50% ] 0003/0200 VUs  05.0s/10s  2500.00 iters/s
+
+running (06.4s), 0001/0200 VUs, 14966 complete and 0 interrupted iterations
+ceiling   [  60% ] 0001/0200 VUs  06.0s/10s  2500.00 iters/s
+
+running (07.4s), 0001/0200 VUs, 17466 complete and 0 interrupted iterations
+ceiling   [  70% ] 0001/0200 VUs  07.0s/10s  2500.00 iters/s
+
+running (08.4s), 0006/0200 VUs, 19964 complete and 0 interrupted iterations
+ceiling   [  80% ] 0006/0200 VUs  08.0s/10s  2500.00 iters/s
+
+running (09.4s), 0002/0200 VUs, 22465 complete and 0 interrupted iterations
+ceiling   [  90% ] 0002/0200 VUs  09.0s/10s  2500.00 iters/s
+
+running (10.4s), 0001/0200 VUs, 24966 complete and 0 interrupted iterations
+ceiling   [ 100% ] 0001/0200 VUs  10.0s/10s  2500.00 iters/s
+K6_SUMMARY {"attack":"cache-ceiling","note":"warmed keys, answered by Redis","requests":25001,"rps":2399.9,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.18,"med":0.43,"avg":0.53,"p90":0.74,"p95":0.85,"p99":null,"max":416.99},"served_by":{},"latency_by_layer":{}}
+
+running (10.4s), 0000/0200 VUs, 25001 complete and 0 interrupted iterations
+ceiling ✓ [ 100% ] 0000/0200 VUs  10s  2500.00 iters/s

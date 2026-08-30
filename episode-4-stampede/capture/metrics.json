@@ -1,0 +1,353 @@
+{
+  "baseline": {
+    "cache_hit": {
+      "samples": 19,
+      "min_ms": 0.21,
+      "median_ms": 0.26,
+      "max_ms": 0.34
+    },
+    "uncached_read_ms": 26.66
+  },
+  "db_ceiling": {
+    "profile_queries_per_s": 261.3,
+    "median_ms": 107.02,
+    "p95_ms": 201.64,
+    "requests": 3941,
+    "note": "uncached reads, straight to Postgres, never touching Redis"
+  },
+  "cache_ceiling": {
+    "requests_per_s": 2399.9,
+    "median_ms": 0.43,
+    "p95_ms": 0.85,
+    "failed_pct": 0,
+    "dropped_iterations": 0,
+    "note": "warmed keys, answered by Redis; an offered rate that was met, not a limit found"
+  },
+  "stampede": {
+    "hot_key": "user:42",
+    "undefended": {
+      "readers": 200,
+      "vus": 200,
+      "served_by": {
+        "hit": 71,
+        "miss": 129
+      },
+      "db_queries": 129,
+      "db_queries_for_hot_key": 129,
+      "max_concurrent_db_loads": 127,
+      "peak_pool_in_use": 20,
+      "max_waiting_on_lock": 0,
+      "wait_hits": 0,
+      "wait_timeouts": 0,
+      "lock_acquired": 0,
+      "lock_denied": 0,
+      "latency_ms": {
+        "med": 129.84,
+        "p95": 385.69,
+        "p99": 396.87,
+        "max": 400.18
+      },
+      "miss_latency_ms": {
+        "med": 235.51,
+        "p95": 388.98,
+        "p99": 398.71,
+        "max": 400.18
+      },
+      "leader_latency_ms": null,
+      "wait_latency_ms": null,
+      "pg_calls": {
+        "user_lookups": 129,
+        "profile_aggregates": 129
+      },
+      "pg_log": {
+        "log_lines": 1800,
+        "aggregate_executions": 50,
+        "statements_for_hot_key": 150,
+        "db_queries": 50
+      },
+      "postgres_cpu": {
+        "samples": 5,
+        "median_pct": 1.8,
+        "peak_pct": 430.4,
+        "note": "docker stats, ~0.7 Hz -- too coarse to resolve an event this short; use max_concurrent_db_loads and the latencies instead"
+      }
+    },
+    "locked": {
+      "readers": 200,
+      "vus": 200,
+      "served_by": {
+        "leader": 1,
+        "wait_hit": 199
+      },
+      "db_queries": 1,
+      "db_queries_for_hot_key": 1,
+      "max_concurrent_db_loads": 1,
+      "peak_pool_in_use": 0,
+      "max_waiting_on_lock": 199,
+      "wait_hits": 199,
+      "wait_timeouts": 0,
+      "lock_acquired": 1,
+      "lock_denied": 199,
+      "latency_ms": {
+        "med": 44.16,
+        "p95": 56.77,
+        "p99": 56.93,
+        "max": 57.03
+      },
+      "miss_latency_ms": null,
+      "leader_latency_ms": {
+        "med": 36.65,
+        "p95": 36.65,
+        "p99": 36.65,
+        "max": 36.65
+      },
+      "wait_latency_ms": {
+        "med": 44.18,
+        "p95": 56.77,
+        "p99": 56.93,
+        "max": 57.03
+      },
+      "pg_calls": {
+        "user_lookups": 1,
+        "profile_aggregates": 1
+      },
+      "pg_log": {
+        "log_lines": 36,
+        "aggregate_executions": 1,
+        "statements_for_hot_key": 3,
+        "db_queries": 1
+      },
+      "postgres_cpu": {
+        "samples": 5,
+        "median_pct": 1.5,
+        "peak_pct": 3.7,
+        "note": "docker stats, ~0.7 Hz -- too coarse to resolve an event this short; use max_concurrent_db_loads and the latencies instead"
+      }
+    },
+    "query_reduction_x": 129.0,
+    "slowest_request_reduction_x": 7.0
+  },
+  "release": {
+    "note": "the same short lock TTL both ways: the only difference is how the lock is given back",
+    "unsafe": {
+      "lock_ttl_ms": 10,
+      "cache_ttl_seconds": 3,
+      "requests": 40001,
+      "achieved_rps": 2000,
+      "dropped_requests": 0,
+      "lock_acquired": 17,
+      "lock_denied": 323,
+      "released_own": 0,
+      "release_wrongful": 5,
+      "release_refused": 0,
+      "release_gone": 12,
+      "db_queries": 17,
+      "max_concurrent_db_loads": 3,
+      "wait_timeouts": 0,
+      "latency_ms": {
+        "min": 0.14,
+        "med": 0.38,
+        "avg": 0.69,
+        "p90": 0.8,
+        "p95": 1.11,
+        "p99": 2.9,
+        "max": 52.39
+      }
+    },
+    "lua": {
+      "lock_ttl_ms": 10,
+      "cache_ttl_seconds": 3,
+      "requests": 40001,
+      "achieved_rps": 1999.9,
+      "dropped_requests": 0,
+      "lock_acquired": 17,
+      "lock_denied": 287,
+      "released_own": 0,
+      "release_wrongful": 0,
+      "release_refused": 17,
+      "release_gone": 0,
+      "db_queries": 17,
+      "max_concurrent_db_loads": 3,
+      "wait_timeouts": 0,
+      "latency_ms": {
+        "min": 0.15,
+        "med": 0.39,
+        "avg": 0.65,
+        "p90": 0.8,
+        "p95": 1.1,
+        "p99": 2.3,
+        "max": 43.14
+      }
+    }
+  },
+  "sustained": {
+    "cache_ttl_seconds": 5,
+    "offered_rps": 1969.4,
+    "runs": {
+      "none": {
+        "requests": 118458,
+        "achieved_rps": 1969.4,
+        "dropped_requests": 1543,
+        "served_by": {
+          "miss": 891,
+          "hit": 117567
+        },
+        "db_queries": 891,
+        "early_refreshes": 0,
+        "wait_hits": 0,
+        "wait_timeouts": 0,
+        "max_concurrent_db_loads": 150,
+        "max_waiting_on_lock": 0,
+        "peak_db_loads_per_s": 556.0,
+        "peak_pool_in_use": 20,
+        "latency_ms": {
+          "min": 0.13,
+          "med": 0.39,
+          "avg": 4.15,
+          "p90": 1.3,
+          "p95": 3.26,
+          "p99": 129.8,
+          "max": 727.28
+        },
+        "hit_latency_ms": {
+          "med": 0.39,
+          "p95": 2.51,
+          "p99": 49.59,
+          "max": 440.29
+        },
+        "miss_latency_ms": {
+          "med": 170.63,
+          "p95": 559.96,
+          "p99": 697,
+          "max": 727.28
+        },
+        "leader_latency_ms": null,
+        "wait_latency_ms": null,
+        "failed_pct": 0,
+        "pg_calls": {
+          "user_lookups": 891,
+          "profile_aggregates": 891
+        },
+        "postgres_cpu": {
+          "samples": 31,
+          "median_pct": 1.1,
+          "peak_pct": 376.9,
+          "note": "docker stats, ~0.7 Hz; 100% = one core"
+        }
+      },
+      "lock": {
+        "requests": 119618,
+        "achieved_rps": 1985.1,
+        "dropped_requests": 0,
+        "served_by": {
+          "wait_hit": 571,
+          "hit": 119035,
+          "leader": 12
+        },
+        "db_queries": 12,
+        "early_refreshes": 0,
+        "wait_hits": 571,
+        "wait_timeouts": 0,
+        "max_concurrent_db_loads": 1,
+        "max_waiting_on_lock": 61,
+        "peak_db_loads_per_s": 4.0,
+        "peak_pool_in_use": 1,
+        "latency_ms": {
+          "min": 0.15,
+          "med": 0.41,
+          "avg": 0.62,
+          "p90": 0.8,
+          "p95": 1.07,
+          "p99": 2.01,
+          "max": 444.99
+        },
+        "hit_latency_ms": {
+          "med": 0.41,
+          "p95": 1.04,
+          "p99": 1.72,
+          "max": 444.99
+        },
+        "miss_latency_ms": null,
+        "leader_latency_ms": {
+          "med": 24.69,
+          "p95": 28.46,
+          "p99": 30.84,
+          "max": 31.43
+        },
+        "wait_latency_ms": {
+          "med": 20.69,
+          "p95": 41.68,
+          "p99": 42.53,
+          "max": 43.12
+        },
+        "failed_pct": 0,
+        "pg_calls": {
+          "user_lookups": 12,
+          "profile_aggregates": 12
+        },
+        "postgres_cpu": {
+          "samples": 31,
+          "median_pct": 1.1,
+          "peak_pct": 4.6,
+          "note": "docker stats, ~0.7 Hz; 100% = one core"
+        }
+      },
+      "xfetch": {
+        "requests": 119298,
+        "achieved_rps": 1986.1,
+        "dropped_requests": 703,
+        "served_by": {
+          "hit": 119298
+        },
+        "db_queries": 12,
+        "early_refreshes": 12,
+        "wait_hits": 0,
+        "wait_timeouts": 0,
+        "max_concurrent_db_loads": 1,
+        "max_waiting_on_lock": 0,
+        "peak_db_loads_per_s": 4.0,
+        "peak_pool_in_use": 1,
+        "latency_ms": {
+          "min": 0.17,
+          "med": 0.45,
+          "avg": 1.52,
+          "p90": 0.73,
+          "p95": 0.89,
+          "p99": 2.4,
+          "max": 346.51
+        },
+        "hit_latency_ms": {
+          "med": 0.45,
+          "p95": 0.89,
+          "p99": 2.4,
+          "max": 346.51
+        },
+        "miss_latency_ms": null,
+        "leader_latency_ms": null,
+        "wait_latency_ms": null,
+        "failed_pct": 0,
+        "pg_calls": {
+          "user_lookups": 12,
+          "profile_aggregates": 12
+        },
+        "postgres_cpu": {
+          "samples": 30,
+          "median_pct": 1.4,
+          "peak_pct": 4.8,
+          "note": "docker stats, ~0.7 Hz; 100% = one core"
+        }
+      }
+    },
+    "db_query_reduction_none_vs_lock_x": 74.2,
+    "db_query_reduction_none_vs_xfetch_x": 74.2
+  },
+  "config": {
+    "cache_ttl_seconds": 300,
+    "write_policy": "delete",
+    "lock_ttl_ms": 5000,
+    "lock_wait_ms": 5000,
+    "lock_release": "lua",
+    "xfetch_beta": 1.0,
+    "users": 100000
+  }
+}

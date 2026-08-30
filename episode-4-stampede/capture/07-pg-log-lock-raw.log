@@ -1,0 +1,36 @@
+postgres-1  | 2026-08-30 18:37:44.815 UTC [92] LOG:  execute __asyncpg_stmt_1a__: 
+postgres-1  | 	SELECT id, name, email, city, joined_at
+postgres-1  | 	FROM   users
+postgres-1  | 	WHERE  id = $1
+postgres-1  | 	
+postgres-1  | 2026-08-30 18:37:44.815 UTC [92] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:44.816 UTC [92] LOG:  execute __asyncpg_stmt_25__: 
+postgres-1  | 	WITH spend AS (
+postgres-1  | 	    SELECT user_id,
+postgres-1  | 	           sum(amount_cents) AS total_cents,
+postgres-1  | 	           count(*)          AS n_orders
+postgres-1  | 	    FROM   orders
+postgres-1  | 	    GROUP  BY user_id
+postgres-1  | 	)
+postgres-1  | 	SELECT me.n_orders                                              AS order_count,
+postgres-1  | 	       me.total_cents                                           AS lifetime_cents,
+postgres-1  | 	       round(100.0 * count(*) FILTER (WHERE s.total_cents < me.total_cents)
+postgres-1  | 	             / nullif(count(*), 0), 1)                          AS spend_percentile
+postgres-1  | 	FROM   spend me
+postgres-1  | 	JOIN   spend s ON true
+postgres-1  | 	WHERE  me.user_id = $1
+postgres-1  | 	GROUP  BY me.n_orders, me.total_cents
+postgres-1  | 	
+postgres-1  | 2026-08-30 18:37:44.816 UTC [92] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:44.847 UTC [92] LOG:  execute __asyncpg_stmt_39__: 
+postgres-1  | 	SELECT id, item, amount_cents, placed_at
+postgres-1  | 	FROM   orders
+postgres-1  | 	WHERE  user_id = $1
+postgres-1  | 	ORDER  BY placed_at DESC
+postgres-1  | 	LIMIT  5
+postgres-1  | 	
+postgres-1  | 2026-08-30 18:37:44.847 UTC [92] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:44.848 UTC [92] LOG:  statement: SELECT pg_advisory_unlock_all();
+postgres-1  | 	CLOSE ALL;
+postgres-1  | 	UNLISTEN *;
+postgres-1  | 	RESET ALL;

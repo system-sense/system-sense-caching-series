@@ -1,0 +1,21 @@
+req 1    MISS    28.94 ms
+req 2    HIT      0.21 ms
+req 3    HIT      0.29 ms
+req 4    HIT      0.32 ms
+req 5    HIT      0.26 ms
+req 6    HIT      0.28 ms
+req 7    HIT      0.26 ms
+req 8    HIT      0.26 ms
+req 9    HIT      0.26 ms
+req 10   HIT      0.25 ms
+req 11   HIT      0.25 ms
+req 12   HIT      0.34 ms
+req 13   HIT      0.22 ms
+req 14   HIT      0.27 ms
+req 15   HIT      0.23 ms
+req 16   HIT      0.24 ms
+req 17   HIT      0.24 ms
+req 18   HIT      0.24 ms
+req 19   HIT      0.25 ms
+req 20   HIT      0.26 ms
+uncached         26.66 ms

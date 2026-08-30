@@ -1,0 +1,72 @@
+ Container episode-4-stampede-app-1 Running 
+ Container episode-4-stampede-postgres-1 Running 
+ Container episode-4-stampede-redis-1 Running 
+ Container episode-4-stampede-postgres-1 Waiting 
+ Container episode-4-stampede-redis-1 Waiting 
+ Container episode-4-stampede-redis-1 Healthy 
+ Container episode-4-stampede-postgres-1 Healthy 
+ Container episode-4-stampede-load-test-run-c4f627acae7b Creating 
+ Container episode-4-stampede-load-test-run-c4f627acae7b Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/ceiling.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 32 max VUs, 45s max duration (incl. graceful stop):
+              * ceiling: 32 looping VUs for 15s (gracefulStop: 30s)
+
+
+running (01.0s), 32/32 VUs, 177 complete and 0 interrupted iterations
+ceiling   [   7% ] 32 VUs  01.0s/15s
+
+running (02.0s), 32/32 VUs, 402 complete and 0 interrupted iterations
+ceiling   [  13% ] 32 VUs  02.0s/15s
+
+running (03.0s), 32/32 VUs, 635 complete and 0 interrupted iterations
+ceiling   [  20% ] 32 VUs  03.0s/15s
+
+running (04.0s), 32/32 VUs, 858 complete and 0 interrupted iterations
+ceiling   [  27% ] 32 VUs  04.0s/15s
+
+running (05.0s), 32/32 VUs, 927 complete and 0 interrupted iterations
+ceiling   [  33% ] 32 VUs  05.0s/15s
+
+running (06.0s), 32/32 VUs, 1108 complete and 0 interrupted iterations
+ceiling   [  40% ] 32 VUs  06.0s/15s
+
+running (07.0s), 32/32 VUs, 1383 complete and 0 interrupted iterations
+ceiling   [  47% ] 32 VUs  07.0s/15s
+
+running (08.0s), 32/32 VUs, 1696 complete and 0 interrupted iterations
+ceiling   [  53% ] 32 VUs  08.0s/15s
+
+running (09.0s), 32/32 VUs, 2010 complete and 0 interrupted iterations
+ceiling   [  60% ] 32 VUs  09.0s/15s
+
+running (10.0s), 32/32 VUs, 2332 complete and 0 interrupted iterations
+ceiling   [  67% ] 32 VUs  10.0s/15s
+
+running (11.0s), 32/32 VUs, 2649 complete and 0 interrupted iterations
+ceiling   [  73% ] 32 VUs  11.0s/15s
+
+running (12.0s), 32/32 VUs, 2971 complete and 0 interrupted iterations
+ceiling   [  80% ] 32 VUs  12.0s/15s
+
+running (13.0s), 32/32 VUs, 3283 complete and 0 interrupted iterations
+ceiling   [  87% ] 32 VUs  13.0s/15s
+
+running (14.0s), 32/32 VUs, 3592 complete and 0 interrupted iterations
+ceiling   [  93% ] 32 VUs  14.0s/15s
+
+running (15.0s), 32/32 VUs, 3907 complete and 0 interrupted iterations
+ceiling   [ 100% ] 32 VUs  15.0s/15s
+K6_SUMMARY {"attack":"db-ceiling","note":"uncached reads, never hits Redis","requests":3941,"rps":261.3,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":29.59,"med":107.02,"avg":122.06,"p90":172.42,"p95":201.64,"p99":null,"max":1086.3},"served_by":{},"latency_by_layer":{}}
+
+running (15.1s), 00/32 VUs, 3941 complete and 0 interrupted iterations
+ceiling ✓ [ 100% ] 32 VUs  15s

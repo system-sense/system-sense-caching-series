@@ -1,0 +1,1 @@
+{"attack":"sustained-xfetch","hot_key":"user:42","requests":119298,"rps":1986.1,"failed_pct":0,"dropped_iterations":703,"latency_ms":{"min":0.17,"med":0.45,"avg":1.52,"p90":0.73,"p95":0.89,"p99":2.4,"max":346.51},"served_by":{"hit":119298},"latency_by_layer":{"hit":{"med":0.45,"p95":0.89,"p99":2.4,"max":346.51}}}

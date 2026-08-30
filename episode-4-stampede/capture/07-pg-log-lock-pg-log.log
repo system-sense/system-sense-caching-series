@@ -1,0 +1,14 @@
+== with the lock: one execution, for two hundred readers
+
+200 readers, one key, one expiry. Postgres logged 36 lines.
+1 of them are executions of the profile aggregate, and
+3 are statements carrying $1 = '42'.
+
+postgres-1  | 2026-08-30 18:37:44.815 UTC [92] LOG:  execute __asyncpg_stmt_1a__: 
+postgres-1  | 2026-08-30 18:37:44.815 UTC [92] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:44.816 UTC [92] LOG:  execute __asyncpg_stmt_25__: 
+postgres-1  | 	WITH spend AS (
+postgres-1  | 2026-08-30 18:37:44.816 UTC [92] DETAIL:  parameters: $1 = '42'
+postgres-1  | 2026-08-30 18:37:44.847 UTC [92] LOG:  execute __asyncpg_stmt_39__: 
+postgres-1  | 2026-08-30 18:37:44.847 UTC [92] DETAIL:  parameters: $1 = '42'
+PG_LOG_COUNT {"run":"07-pg-log-lock","log_lines":36,"aggregates":1,"statements_for_hot_key":3}

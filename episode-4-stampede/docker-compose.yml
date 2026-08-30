@@ -1,0 +1,132 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    # jit=off: JIT costs ~90 ms to compile a query that runs in tens of ms,
+    #   which is noise, not signal. Settled in Episode 1.
+    # pg_stat_statements: Episode 3 counts queries, and Postgres counting them
+    #   itself is worth more than the application's word for it.
+    command:
+      - "postgres"
+      - "-c"
+      - "jit=off"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.track=all"
+    environment:
+      POSTGRES_USER: sysense
+      POSTGRES_PASSWORD: sysense
+      POSTGRES_DB: sysense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sysense -d sysense"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  app:
+    build: .
+    # ──────────────────────────────────────────────────────────────────
+    #  THE KNOBS.
+    #
+    #  Episode 2 settled the write path: WRITE_POLICY=delete, and it stays.
+    #  Episode 3's two defenses are still here and still off by default, so
+    #  that its attacks reproduce unchanged.
+    #
+    #  This episode's knob is the one Episode 3 said it did not have:
+    #
+    #      STAMPEDE_DEFENSE
+    #          none     every reader that misses runs the aggregate.
+    #                   200 concurrent readers, 200 queries.
+    #                   (the default, because it is the bug)
+    #          lock     SET key token NX PX. One rebuilds, the rest wait.
+    #          xfetch   rebuild the key *before* it expires, so there is
+    #                   never a moment for the stampede to happen in.
+    #
+    #      LOCK_TTL_MS      how long one rebuild may hold the key (5000)
+    #      LOCK_RELEASE     lua (correct) | unsafe (what most tutorials show)
+    #      XFETCH_BETA      how eagerly a reader volunteers to refresh early
+    #
+    #  Survive the boss fight without editing a file:
+    #
+    #      STAMPEDE_DEFENSE=lock docker compose up --build
+    #
+    #  THE EXPERIMENT: set LOCK_TTL_MS below the time the rebuild takes, and
+    #  the lock expires while its holder is still working. With
+    #  LOCK_RELEASE=unsafe that holder then deletes the *next* holder's lock.
+    #  Watch release_wrongful climb in /metrics; switch to lua and watch it
+    #  become release_refused instead.
+    # ──────────────────────────────────────────────────────────────────
+    environment:
+      CACHE_ENABLED: "true"
+      CACHE_TTL_SECONDS: "300"
+      WRITE_POLICY: "${WRITE_POLICY:-delete}"
+      PENETRATION_DEFENSE: "${PENETRATION_DEFENSE:-none}"
+      NEGATIVE_TTL_SECONDS: "${NEGATIVE_TTL_SECONDS:-30}"
+      BLOOM_FP_RATE: "${BLOOM_FP_RATE:-0.01}"
+      TTL_JITTER_SECONDS: "${TTL_JITTER_SECONDS:-0}"
+      STAMPEDE_DEFENSE: "${STAMPEDE_DEFENSE:-none}"
+      LOCK_TTL_MS: "${LOCK_TTL_MS:-5000}"
+      LOCK_WAIT_MS: "${LOCK_WAIT_MS:-5000}"
+      LOCK_POLL_MS: "${LOCK_POLL_MS:-20}"
+      LOCK_RELEASE: "${LOCK_RELEASE:-lua}"
+      XFETCH_BETA: "${XFETCH_BETA:-1.0}"
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      REDIS_URL: "redis://redis:6379/0"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # The clickable walkthrough. Starts with everything else, so the first thing
+  # a viewer does after `docker compose up` is open a page, not read a manual.
+  demo:
+    build: ./demo
+    environment:
+      APP_URL: "http://app:8000"
+      REDIS_URL: "redis://redis:6379/0"
+      DEMO_USER_ID: "42"
+    ports:
+      - "8080:8080"
+    depends_on:
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
+
+  # The attacker. Behind a profile, so `docker compose up` does not start it --
+  # you run an attack deliberately, one at a time:
+  #
+  #     docker compose run --rm load-test run /scripts/stampede.js
+  #
+  load-test:
+    image: grafana/k6:0.55.0
+    profiles: ["load"]
+    volumes:
+      - ./load-test:/scripts:ro
+    environment:
+      BASE: "http://app:8000"
+    depends_on:
+      app:
+        condition: service_started
+
+volumes:
+  pgdata:
