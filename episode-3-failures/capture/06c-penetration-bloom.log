@@ -1,0 +1,77 @@
+ Container episode-3-failures-postgres-1 Running 
+ Container episode-3-failures-redis-1 Running 
+ Container episode-3-failures-app-1 Running 
+ Container episode-3-failures-postgres-1 Waiting 
+ Container episode-3-failures-redis-1 Waiting 
+ Container episode-3-failures-redis-1 Healthy 
+ Container episode-3-failures-postgres-1 Healthy 
+ Container episode-3-failures-load-test-run-953c87f6321a Creating 
+ Container episode-3-failures-load-test-run-953c87f6321a Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/penetration.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 40 max VUs, 45s max duration (incl. graceful stop):
+              * attack: 40 looping VUs for 15s (gracefulStop: 30s)
+
+time="2026-08-30T01:45:17Z" level=warning msg="The test has generated metrics with 117096 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+running (01.0s), 40/40 VUs, 20403 complete and 0 interrupted iterations
+attack   [   7% ] 40 VUs  01.0s/15s
+time="2026-08-30T01:45:18Z" level=warning msg="The test has generated metrics with 208287 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+running (02.0s), 40/40 VUs, 40828 complete and 0 interrupted iterations
+attack   [  13% ] 40 VUs  02.0s/15s
+time="2026-08-30T01:45:19Z" level=warning msg="The test has generated metrics with 403452 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+running (03.0s), 40/40 VUs, 60843 complete and 0 interrupted iterations
+attack   [  20% ] 40 VUs  03.0s/15s
+
+running (04.0s), 40/40 VUs, 81183 complete and 0 interrupted iterations
+attack   [  27% ] 40 VUs  04.0s/15s
+time="2026-08-30T01:45:21Z" level=warning msg="The test has generated metrics with 806931 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+running (05.0s), 40/40 VUs, 101289 complete and 0 interrupted iterations
+attack   [  33% ] 40 VUs  05.0s/15s
+
+running (06.0s), 40/40 VUs, 120851 complete and 0 interrupted iterations
+attack   [  40% ] 40 VUs  06.0s/15s
+
+running (07.0s), 40/40 VUs, 141542 complete and 0 interrupted iterations
+attack   [  47% ] 40 VUs  07.0s/15s
+
+running (08.0s), 40/40 VUs, 161064 complete and 0 interrupted iterations
+attack   [  53% ] 40 VUs  08.0s/15s
+
+running (09.0s), 40/40 VUs, 181240 complete and 0 interrupted iterations
+attack   [  60% ] 40 VUs  09.0s/15s
+time="2026-08-30T01:45:26Z" level=warning msg="The test has generated metrics with 1605942 unique time series, which is higher than the suggested limit of 100000 and could cause high memory usage. Consider not using high-cardinality values like unique IDs as metric tags or, if you need them in the URL, use the name metric tag or URL grouping. See https://grafana.com/docs/k6/latest/using-k6/tags-and-groups/ for details." component=metrics-engine-ingester
+
+running (10.0s), 40/40 VUs, 201599 complete and 0 interrupted iterations
+attack   [  67% ] 40 VUs  10.0s/15s
+
+running (11.0s), 40/40 VUs, 220123 complete and 0 interrupted iterations
+attack   [  73% ] 40 VUs  11.0s/15s
+
+running (12.0s), 40/40 VUs, 240913 complete and 0 interrupted iterations
+attack   [  80% ] 40 VUs  12.0s/15s
+
+running (13.0s), 40/40 VUs, 261394 complete and 0 interrupted iterations
+attack   [  87% ] 40 VUs  13.0s/15s
+
+running (14.0s), 40/40 VUs, 279157 complete and 0 interrupted iterations
+attack   [  93% ] 40 VUs  14.0s/15s
+
+running (15.0s), 40/40 VUs, 299309 complete and 0 interrupted iterations
+attack   [ 100% ] 40 VUs  15.0s/15s
+K6_SUMMARY {"attack":"bloom-random","mode":"random","pool":null,"requests":299468,"rps":19962.2,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.09,"med":1.8,"avg":1.94,"p90":2.05,"p95":2.37,"max":34.88},"served_by":{"miss":2611,"neg_hit":420,"bloom_reject":296437},"latency_by_layer":{}}
+
+running (15.0s), 00/40 VUs, 299468 complete and 0 interrupted iterations
+attack ✓ [ 100% ] 40 VUs  15s

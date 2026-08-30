@@ -1,0 +1,1 @@
+{"attack":"null_cache-random","mode":"random","pool":null,"requests":104747,"rps":6978.6,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.77,"med":5.65,"avg":5.69,"p90":6.83,"p95":7.27,"max":29.52},"served_by":{"miss":99593,"neg_hit":5154},"latency_by_layer":{}}

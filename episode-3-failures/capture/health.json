@@ -1,0 +1,1 @@
+{"ok":true,"cache_enabled":true,"cache_ttl_seconds":300,"write_policy":"delete","defense":"none","ttl_jitter_seconds":0,"negative_ttl_seconds":30,"bloom":{"items":100000,"bits":958506,"size_bytes":119814,"size_kib":117.0,"hashes":7,"target_fp_rate":0.01,"predicted_fp_rate":0.01},"bloom_build_ms":161.0,"max_user_id":100000}

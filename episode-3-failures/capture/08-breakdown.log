@@ -1,0 +1,102 @@
+ Container episode-3-failures-app-1 Running 
+ Container episode-3-failures-postgres-1 Running 
+ Container episode-3-failures-redis-1 Running 
+ Container episode-3-failures-postgres-1 Waiting 
+ Container episode-3-failures-redis-1 Waiting 
+ Container episode-3-failures-redis-1 Healthy 
+ Container episode-3-failures-postgres-1 Healthy 
+ Container episode-3-failures-load-test-run-2913c70cfc55 Creating 
+ Container episode-3-failures-load-test-run-2913c70cfc55 Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/breakdown.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 4000 max VUs, 55s max duration (incl. graceful stop):
+              * hot_key: 2000.00 iterations/s for 25s (maxVUs: 200-4000, gracefulStop: 30s)
+
+
+running (01.0s), 0002/0200 VUs, 1966 complete and 0 interrupted iterations
+hot_key   [   4% ] 0002/0200 VUs  01.0s/25s  2000.00 iters/s
+
+running (02.0s), 0001/0200 VUs, 3965 complete and 0 interrupted iterations
+hot_key   [   8% ] 0003/0200 VUs  02.0s/25s  2000.00 iters/s
+
+running (03.0s), 0000/0200 VUs, 5967 complete and 0 interrupted iterations
+hot_key   [  12% ] 0000/0200 VUs  03.0s/25s  2000.00 iters/s
+
+running (04.0s), 0000/0200 VUs, 7963 complete and 0 interrupted iterations
+hot_key   [  16% ] 0001/0200 VUs  04.0s/25s  2000.00 iters/s
+
+running (05.0s), 0003/0200 VUs, 9965 complete and 0 interrupted iterations
+hot_key   [  20% ] 0003/0200 VUs  05.0s/25s  2000.00 iters/s
+
+running (06.0s), 0006/0200 VUs, 11962 complete and 0 interrupted iterations
+hot_key   [  24% ] 0006/0200 VUs  06.0s/25s  2000.00 iters/s
+
+running (07.0s), 0002/0200 VUs, 13966 complete and 0 interrupted iterations
+hot_key   [  28% ] 0002/0200 VUs  07.0s/25s  2000.00 iters/s
+
+running (08.0s), 0003/0200 VUs, 15965 complete and 0 interrupted iterations
+hot_key   [  32% ] 0003/0200 VUs  08.0s/25s  2000.00 iters/s
+
+running (09.0s), 0000/0200 VUs, 17967 complete and 0 interrupted iterations
+hot_key   [  36% ] 0000/0200 VUs  09.0s/25s  2000.00 iters/s
+
+running (10.0s), 0002/0200 VUs, 19966 complete and 0 interrupted iterations
+hot_key   [  40% ] 0002/0200 VUs  10.0s/25s  2000.00 iters/s
+
+running (11.0s), 0002/0200 VUs, 21966 complete and 0 interrupted iterations
+hot_key   [  44% ] 0002/0200 VUs  11.0s/25s  2000.00 iters/s
+
+running (12.0s), 0005/0200 VUs, 23963 complete and 0 interrupted iterations
+hot_key   [  48% ] 0005/0200 VUs  12.0s/25s  2000.00 iters/s
+
+running (13.0s), 0005/0200 VUs, 25963 complete and 0 interrupted iterations
+hot_key   [  52% ] 0006/0200 VUs  13.0s/25s  2000.00 iters/s
+
+running (14.0s), 0001/0200 VUs, 27965 complete and 0 interrupted iterations
+hot_key   [  56% ] 0002/0200 VUs  14.0s/25s  2000.00 iters/s
+
+running (15.0s), 0000/0200 VUs, 29966 complete and 0 interrupted iterations
+hot_key   [  60% ] 0000/0200 VUs  15.0s/25s  2000.00 iters/s
+
+running (16.0s), 0000/0200 VUs, 31967 complete and 0 interrupted iterations
+hot_key   [  64% ] 0000/0200 VUs  16.0s/25s  2000.00 iters/s
+
+running (17.0s), 0002/0200 VUs, 33966 complete and 0 interrupted iterations
+hot_key   [  68% ] 0003/0200 VUs  17.0s/25s  2000.00 iters/s
+
+running (18.0s), 0002/0200 VUs, 35966 complete and 0 interrupted iterations
+hot_key   [  72% ] 0002/0200 VUs  18.0s/25s  2000.00 iters/s
+
+running (19.0s), 0001/0200 VUs, 37966 complete and 0 interrupted iterations
+hot_key   [  76% ] 0001/0200 VUs  19.0s/25s  2000.00 iters/s
+
+running (20.0s), 0000/0200 VUs, 39966 complete and 0 interrupted iterations
+hot_key   [  80% ] 0000/0200 VUs  20.0s/25s  2000.00 iters/s
+
+running (21.0s), 0000/0200 VUs, 41967 complete and 0 interrupted iterations
+hot_key   [  84% ] 0000/0200 VUs  21.0s/25s  2000.00 iters/s
+
+running (22.0s), 0005/0200 VUs, 43961 complete and 0 interrupted iterations
+hot_key   [  88% ] 0005/0200 VUs  22.0s/25s  2000.00 iters/s
+
+running (23.0s), 0000/0200 VUs, 45965 complete and 0 interrupted iterations
+hot_key   [  92% ] 0000/0200 VUs  23.0s/25s  2000.00 iters/s
+
+running (24.0s), 0001/0200 VUs, 47966 complete and 0 interrupted iterations
+hot_key   [  96% ] 0001/0200 VUs  24.0s/25s  2000.00 iters/s
+
+running (25.0s), 0004/0200 VUs, 49966 complete and 0 interrupted iterations
+hot_key   [ 100% ] 0004/0200 VUs  25.0s/25s  2000.00 iters/s
+K6_SUMMARY {"attack":"breakdown-hot-key","hot_key":"user:42","requests":50002,"rps":2000,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.16,"med":0.4,"avg":0.83,"p90":0.95,"p95":1.43,"max":279.71},"served_by":{"miss":79,"hit":49923},"latency_by_layer":{"hit":{"med":0.4,"p95":1.4,"max":17.11},"miss":{"med":185.44,"p95":270.48,"max":279.71}}}
+
+running (25.0s), 0000/0200 VUs, 50002 complete and 0 interrupted iterations
+hot_key ✓ [ 100% ] 0000/0200 VUs  25s  2000.00 iters/s

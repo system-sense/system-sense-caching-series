@@ -1,0 +1,105 @@
+ Image episode-3-failures-app Building 
+ Image episode-3-failures-demo Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.13kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#3 [demo internal] load build definition from Dockerfile
+#3 transferring dockerfile: 298B done
+#3 DONE 0.0s
+
+#4 [demo internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.0s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [demo internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [demo 1/5] FROM docker.io/library/python:3.12-slim
+#7 DONE 0.0s
+
+#8 [app internal] load build context
+#8 transferring context: 322B done
+#8 DONE 0.0s
+
+#9 [demo internal] load build context
+#9 transferring context: 9.89kB done
+#9 DONE 0.0s
+
+#10 [demo 3/6] COPY requirements.txt .
+#10 CACHED
+
+#11 [demo 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [app 2/5] WORKDIR /srv
+#12 CACHED
+
+#13 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#13 CACHED
+
+#14 [app 3/5] COPY requirements.txt .
+#14 CACHED
+
+#15 [app 5/5] COPY app ./app
+#15 CACHED
+
+#16 [app] exporting to image
+#16 exporting layers done
+#16 writing image sha256:8ed9d628ba34b633dd33c2c48f88c45b1ec2bc291653d5abe022c7960810cf20 done
+#16 naming to docker.io/library/episode-3-failures-app done
+#16 DONE 0.0s
+
+#17 [demo 5/6] COPY server.py .
+#17 DONE 0.0s
+
+#18 [app] resolving provenance for metadata file
+#18 DONE 0.0s
+
+#19 [demo 6/6] COPY static ./static
+#19 DONE 0.0s
+
+#20 [demo] exporting to image
+#20 exporting layers 0.0s done
+#20 writing image sha256:23df700af9ed872c0bd000c672367272c757bace876402dcfa697b7389820a57 done
+#20 naming to docker.io/library/episode-3-failures-demo done
+#20 DONE 0.0s
+
+#21 [demo] resolving provenance for metadata file
+#21 DONE 0.0s
+ Image episode-3-failures-app Built 
+ Image episode-3-failures-demo Built 
+ Network episode-3-failures_default Creating 
+ Network episode-3-failures_default Created 
+ Volume episode-3-failures_pgdata Creating 
+ Volume episode-3-failures_pgdata Created 
+ Container episode-3-failures-postgres-1 Creating 
+ Container episode-3-failures-redis-1 Creating 
+ Container episode-3-failures-redis-1 Created 
+ Container episode-3-failures-postgres-1 Created 
+ Container episode-3-failures-app-1 Creating 
+ Container episode-3-failures-app-1 Created 
+ Container episode-3-failures-demo-1 Creating 
+ Container episode-3-failures-demo-1 Created 
+ Container episode-3-failures-redis-1 Starting 
+ Container episode-3-failures-postgres-1 Starting 
+ Container episode-3-failures-redis-1 Started 
+ Container episode-3-failures-postgres-1 Started 
+ Container episode-3-failures-postgres-1 Waiting 
+ Container episode-3-failures-redis-1 Waiting 
+ Container episode-3-failures-redis-1 Healthy 
+ Container episode-3-failures-postgres-1 Healthy 
+ Container episode-3-failures-app-1 Starting 
+ Container episode-3-failures-app-1 Started 
+ Container episode-3-failures-redis-1 Waiting 
+ Container episode-3-failures-redis-1 Healthy 
+ Container episode-3-failures-demo-1 Starting 
+ Container episode-3-failures-demo-1 Started 

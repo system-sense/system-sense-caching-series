@@ -1,0 +1,1 @@
+{"attack":"cache-ceiling","note":"warmed keys, answered by Redis","requests":25002,"rps":2499.9,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.15,"med":0.42,"avg":0.54,"p90":0.81,"p95":1.28,"max":21.15},"served_by":{},"latency_by_layer":{}}

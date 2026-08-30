@@ -1,0 +1,1 @@
+{"attack":"db-ceiling","note":"uncached reads, never hits Redis","requests":4769,"rps":316.5,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":27.6,"med":96.83,"avg":100.81,"p90":140.65,"p95":153.66,"max":344.84},"served_by":{},"latency_by_layer":{}}

@@ -1,0 +1,1 @@
+{"attack":"avalanche-ttl-jitter","warmed_keys":5000,"requests":36000,"rps":599.9,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.18,"med":0.57,"avg":3.4,"p90":21.86,"p95":23.33,"max":57.37},"served_by":{"miss":4335,"hit":31665},"latency_by_layer":{"hit":{"med":0.44,"p95":1.29,"max":14.27},"miss":{"med":22.96,"p95":30.11,"max":57.37}}}

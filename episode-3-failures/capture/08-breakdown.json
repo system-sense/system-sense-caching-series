@@ -1,0 +1,1 @@
+{"attack":"breakdown-hot-key","hot_key":"user:42","requests":50002,"rps":2000,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.16,"med":0.4,"avg":0.83,"p90":0.95,"p95":1.43,"max":279.71},"served_by":{"miss":79,"hit":49923},"latency_by_layer":{"hit":{"med":0.4,"p95":1.4,"max":17.11},"miss":{"med":185.44,"p95":270.48,"max":279.71}}}

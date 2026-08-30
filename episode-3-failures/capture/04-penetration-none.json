@@ -1,0 +1,1 @@
+{"attack":"penetration-undefended","mode":"random","pool":null,"requests":119509,"rps":7966.3,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":1.74,"med":4.78,"avg":4.98,"p90":5.77,"p95":6.15,"max":38.29},"served_by":{"miss":119509},"latency_by_layer":{}}

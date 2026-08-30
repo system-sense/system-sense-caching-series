@@ -1,0 +1,3 @@
+--- null_cache, a SMALL pool of repeated phantom ids: the easy case
+--- null_cache, a DIFFERENT phantom id every time: the real attack
+--- bloom filter, the same random attack

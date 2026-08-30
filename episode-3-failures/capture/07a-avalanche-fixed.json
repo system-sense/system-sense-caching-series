@@ -1,0 +1,1 @@
+{"attack":"avalanche-fixed-ttl","warmed_keys":5000,"requests":35076,"rps":584.6,"failed_pct":0,"dropped_iterations":925,"latency_ms":{"min":0.15,"med":0.79,"avg":410.22,"p90":1949.57,"p95":3453.93,"max":10727.51},"served_by":{"hit":28998,"miss":6078},"latency_by_layer":{"hit":{"med":0.69,"p95":3.06,"max":106.23},"miss":{"med":2204.86,"p95":4337.49,"max":10727.51}}}

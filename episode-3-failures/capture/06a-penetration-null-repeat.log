@@ -1,0 +1,72 @@
+ Container episode-3-failures-redis-1 Running 
+ Container episode-3-failures-app-1 Running 
+ Container episode-3-failures-postgres-1 Running 
+ Container episode-3-failures-redis-1 Waiting 
+ Container episode-3-failures-postgres-1 Waiting 
+ Container episode-3-failures-redis-1 Healthy 
+ Container episode-3-failures-postgres-1 Healthy 
+ Container episode-3-failures-load-test-run-6a61b2ab8a0f Creating 
+ Container episode-3-failures-load-test-run-6a61b2ab8a0f Created 
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/penetration.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 40 max VUs, 45s max duration (incl. graceful stop):
+              * attack: 40 looping VUs for 15s (gracefulStop: 30s)
+
+
+running (01.0s), 40/40 VUs, 13312 complete and 0 interrupted iterations
+attack   [   7% ] 40 VUs  01.0s/15s
+
+running (02.0s), 40/40 VUs, 27105 complete and 0 interrupted iterations
+attack   [  13% ] 40 VUs  02.0s/15s
+
+running (03.0s), 40/40 VUs, 41083 complete and 0 interrupted iterations
+attack   [  20% ] 40 VUs  03.0s/15s
+
+running (04.0s), 40/40 VUs, 55094 complete and 0 interrupted iterations
+attack   [  27% ] 40 VUs  04.0s/15s
+
+running (05.0s), 40/40 VUs, 69025 complete and 0 interrupted iterations
+attack   [  33% ] 40 VUs  05.0s/15s
+
+running (06.0s), 40/40 VUs, 82720 complete and 0 interrupted iterations
+attack   [  40% ] 40 VUs  06.0s/15s
+
+running (07.0s), 40/40 VUs, 96624 complete and 0 interrupted iterations
+attack   [  47% ] 40 VUs  07.0s/15s
+
+running (08.0s), 40/40 VUs, 110623 complete and 0 interrupted iterations
+attack   [  53% ] 40 VUs  08.0s/15s
+
+running (09.0s), 40/40 VUs, 124489 complete and 0 interrupted iterations
+attack   [  60% ] 40 VUs  09.0s/15s
+
+running (10.0s), 40/40 VUs, 138184 complete and 0 interrupted iterations
+attack   [  67% ] 40 VUs  10.0s/15s
+
+running (11.0s), 40/40 VUs, 152132 complete and 0 interrupted iterations
+attack   [  73% ] 40 VUs  11.0s/15s
+
+running (12.0s), 40/40 VUs, 166087 complete and 0 interrupted iterations
+attack   [  80% ] 40 VUs  12.0s/15s
+
+running (13.0s), 40/40 VUs, 180059 complete and 0 interrupted iterations
+attack   [  87% ] 40 VUs  13.0s/15s
+
+running (14.0s), 40/40 VUs, 194141 complete and 0 interrupted iterations
+attack   [  93% ] 40 VUs  14.0s/15s
+
+running (15.0s), 40/40 VUs, 208035 complete and 0 interrupted iterations
+attack   [ 100% ] 40 VUs  15.0s/15s
+K6_SUMMARY {"attack":"null_cache-repeat","mode":"repeat","pool":50,"requests":208138,"rps":13874.5,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.14,"med":2.62,"avg":2.84,"p90":3.47,"p95":3.68,"max":16.86},"served_by":{"miss":82,"neg_hit":208056},"latency_by_layer":{}}
+
+running (15.0s), 00/40 VUs, 208138 complete and 0 interrupted iterations
+attack ✓ [ 100% ] 40 VUs  15s

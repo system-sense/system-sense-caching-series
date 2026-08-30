@@ -1,0 +1,1 @@
+{"attack":"bloom-random","mode":"random","pool":null,"requests":299468,"rps":19962.2,"failed_pct":0,"dropped_iterations":0,"latency_ms":{"min":0.09,"med":1.8,"avg":1.94,"p90":2.05,"p95":2.37,"max":34.88},"served_by":{"miss":2611,"neg_hit":420,"bloom_reject":296437},"latency_by_layer":{}}
