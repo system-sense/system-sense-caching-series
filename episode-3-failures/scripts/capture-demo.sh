@@ -142,12 +142,12 @@ sql() { dc exec -T postgres psql -U sysense -d sysense -q -c "$1" >/dev/null 2>&
   sql "ALTER SYSTEM SET log_statement='all';"
   sql "SELECT pg_reload_conf();"
   sleep 1
-  for i in $(seq 1 150); do curl -fsS -o /dev/null "localhost:8000/api/users/-$((9000 + i))" || true; done
+  for i in $(seq 1 150); do curl -sS -o /dev/null "localhost:8000/api/users/-$((9000 + i))" || true; done
   sleep 1
   sql "ALTER SYSTEM RESET log_statement;"
   sql "SELECT pg_reload_conf();"
 
-  hits=$(dc logs postgres --tail 2000 2>/dev/null | grep -c "parameters: \\$1 = '-9" || true)
+  hits=$(dc logs postgres --tail 2000 2>/dev/null | grep -cF "parameters: \\$1 = '-9" || true)
   echo
   echo "Postgres logged $hits lookups for ids that do not exist. Every one of them"
   echo "is a request the cache was supposed to absorb. An excerpt:"
