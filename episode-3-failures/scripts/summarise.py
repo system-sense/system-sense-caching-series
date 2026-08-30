@@ -187,7 +187,12 @@ def avalanche_run(warm_file, ttl_file, k6name, mname, cpu_phase) -> dict:
         "warm_aggregate_query_ms": warm.get("aggregate_query_ms"),
         "warm_total_ms": warm.get("total_ms"),
         "requests": run.get("requests"),
-        "offered_rps": run.get("rps"),
+        "achieved_rps": run.get("rps"),
+        # Requests the load generator wanted to send and could not, because
+        # every virtual user was still waiting on its last one. Under collapse
+        # the offered rate itself stops being achievable, which understates the
+        # incident unless it is counted.
+        "dropped_requests": run.get("dropped_iterations"),
         "db_queries": ph["counters"].get("db_loads"),
         "peak_db_loads_per_s": ph["peak_db_loads_per_s"],
         "pg_calls": ph["pg_calls"],

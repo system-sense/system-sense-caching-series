@@ -101,15 +101,19 @@ A batch job warms 5,000 keys in one pass — one aggregate query, 5,000 Redis
 writes, **106 ms** for the lot. Every key gets the same TTL, so every key reaches
 the end of it in the same instant.
 
-Then ordinary traffic, 600 req/sec, nothing hostile, across that instant:
+Then ordinary traffic across that instant — 600 req/sec asked for throughout,
+nothing hostile:
 
 ```
-t=0-24s   600 req/s     all hits      0.69 ms      0 database queries
-t=25s     ─────────── every key expires at once ───────────
-t=25s+    600 req/s     all misses    2,204 ms     588 queries/sec
+t=0-24s   600 req/s offered, 600 served    hits    0.69 ms       0 queries/sec
+t=25s     ────────────── every key expires at once ──────────────
+t=25s+    600 req/s offered, 585 served    misses  2,204.86 ms   588 queries/sec
 ```
 
-The offered rate never changed. Only where it landed did.
+Nobody sent more traffic. After the cliff the system could not even *accept* the
+same rate: **925 requests were never sent at all**, because every virtual user
+was still waiting on its last one. The traffic did not increase — it stopped
+fitting.
 
 | | Fixed TTL | TTL + rand(0,30) |
 | --- | ---: | ---: |

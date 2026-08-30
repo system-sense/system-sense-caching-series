@@ -109,7 +109,8 @@
       "warm_aggregate_query_ms": 48.6,
       "warm_total_ms": 106.0,
       "requests": 35076,
-      "offered_rps": 584.6,
+      "achieved_rps": 584.6,
+      "dropped_requests": 925,
       "db_queries": 6078,
       "peak_db_loads_per_s": 588.0,
       "pg_calls": {
@@ -144,7 +145,8 @@
       "warm_aggregate_query_ms": 52.6,
       "warm_total_ms": 116.4,
       "requests": 36000,
-      "offered_rps": 599.9,
+      "achieved_rps": 599.9,
+      "dropped_requests": 0,
       "db_queries": 4335,
       "peak_db_loads_per_s": 196.0,
       "pg_calls": {
