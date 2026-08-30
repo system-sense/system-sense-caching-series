@@ -1,5 +1,7 @@
 # Episode 3 — The 3 Classic Failures
 
+**▶ Watch the episode:** <https://youtu.be/r-UogCUvc6A>
+
 Penetration, Avalanche and Breakdown are **three different bugs with three
 different fixes**. The most common mistake is collapsing them into one vague
 worry about "cache problems", and then reaching for the wrong tool.
