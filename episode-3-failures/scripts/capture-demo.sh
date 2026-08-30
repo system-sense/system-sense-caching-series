@@ -147,7 +147,7 @@ sql() { dc exec -T postgres psql -U sysense -d sysense -q -c "$1" >/dev/null 2>&
   sql "ALTER SYSTEM RESET log_statement;"
   sql "SELECT pg_reload_conf();"
 
-  hits=$(dc logs postgres --tail 2000 2>/dev/null | grep -cF "parameters: \\$1 = '-9" || true)
+  hits=$(dc logs postgres --tail 2000 2>/dev/null | grep -cF "parameters: \$1 = '-9" || true)
   echo
   echo "Postgres logged $hits lookups for ids that do not exist. Every one of them"
   echo "is a request the cache was supposed to absorb. An excerpt:"
