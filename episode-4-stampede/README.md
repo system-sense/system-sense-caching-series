@@ -1,5 +1,7 @@
 # Episode 4 — The Boss Fight
 
+**▶ Watch the episode:** <https://youtu.be/zlscItyxQdw>
+
 Cache Stampede, a distributed lock, the release bug most tutorials skip, and the
 arithmetic that stops the stampede from having a moment to happen in.
 

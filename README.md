@@ -31,7 +31,7 @@ Episode titles link to the video; folders link to the code.
 | [1. The Basics](https://youtu.be/qk1dwB6xWD0) | [`episode-1-basics/`](episode-1-basics/) | Cache-Aside turns an expensive profile read into a sub-millisecond memory read. |
 | [2. The Invalidation Nightmare](https://youtu.be/-PhwgL1FFSc) | [`episode-2-invalidation/`](episode-2-invalidation/) | Dual writes race; **deleting** the key beats **updating** the key. |
 | [3. The 3 Classic Failures](https://youtu.be/r-UogCUvc6A) | [`episode-3-failures/`](episode-3-failures/) | Penetration, Avalanche and Breakdown are three *different* bugs with three *different* fixes. |
-| 4. The Boss Fight | `episode-4-stampede/` | One lock holder regenerates; the other 199 requests wait and read from cache. |
+| [4. The Boss Fight](https://youtu.be/zlscItyxQdw) | [`episode-4-stampede/`](episode-4-stampede/) | One lock holder regenerates; the other 199 requests wait and read from cache. |
 
 ## Stack
 
