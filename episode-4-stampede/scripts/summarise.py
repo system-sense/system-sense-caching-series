@@ -86,6 +86,16 @@ def k6(name: str) -> dict:
     return load(f"{name}.json", {}) or {}
 
 
+def offered_rps(name: str) -> float | None:
+    """The rate k6 was asked for, from k6's own description of the scenario.
+
+    Not the same as the rate it achieved, and the difference is part of the
+    story: under collapse the offered rate stops being achievable.
+    """
+    m = re.search(r"\* traffic: ([\d.]+) iterations/s", text(f"{name}.log"))
+    return float(m.group(1)) if m else None
+
+
 def lat(run: dict, layer: str | None = None) -> dict | None:
     if layer is None:
         return run.get("latency_ms")
@@ -261,7 +271,7 @@ sus = {m: sustained(m) for m in ("none", "lock", "xfetch")}
 health = load("health.json", {}) or {}
 sustained_runs = {
     "cache_ttl_seconds": None,   # filled below from the run's own config
-    "offered_rps": sus["none"].get("achieved_rps"),
+    "offered_rps": offered_rps("10-sustained-none"),
     "runs": sus,
 }
 m_none = load("m-sustained-none.json", {}) or {}

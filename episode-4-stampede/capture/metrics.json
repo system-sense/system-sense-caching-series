@@ -182,7 +182,7 @@
   },
   "sustained": {
     "cache_ttl_seconds": 5,
-    "offered_rps": 1969.4,
+    "offered_rps": 2000.0,
     "runs": {
       "none": {
         "requests": 118458,
@@ -331,7 +331,7 @@
           "profile_aggregates": 12
         },
         "postgres_cpu": {
-          "samples": 30,
+          "samples": 31,
           "median_pct": 1.4,
           "peak_pct": 4.8,
           "note": "docker stats, ~0.7 Hz; 100% = one core"
